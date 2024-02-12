@@ -5,6 +5,6 @@ format:
         toc: false
 ---
 
-This is documentation page for Beatrix project. 
+This is documentation page for housing-gpt project. 
 
 * **Developers** - here you can find instructions to [install](developers/installation.qmd) this project.

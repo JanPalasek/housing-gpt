@@ -7,7 +7,7 @@ project:
     - "*.mov"
 
 website:
-  title: "Beatrix"
+  title: "housing-gpt"
   repo-url: https://github.com/JanPalasek/housing-gpt
   repo-branch: main
   repo-subdir: docs
