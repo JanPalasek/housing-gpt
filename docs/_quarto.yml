@@ -23,7 +23,20 @@ website:
         text: Developers
         menu:
           - developers/installation.qmd
-      - explorations.qmd
+      -
+        text: API
+        href: api/index.qmd
+
+quartodoc:
+  package: hgpt
+  dir: api
+  sidebar: api/_sidebar.yml
+  title: API
+  parser: numpy
+
+  sections: []
+
+
 
 format:
   html:

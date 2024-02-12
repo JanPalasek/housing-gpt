@@ -213,3 +213,8 @@ fabric.properties
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+docs/.quarto/
+docs/objects.json
+docs/api/
+docs/_site/
