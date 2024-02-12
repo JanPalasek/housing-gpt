@@ -1,0 +1,153 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "housing-gpt"
+description = "GPT to help with searching your dream home."
+version = "0.1"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pip-tools", "ruff", "pre-commit", "jupyter", "quartodoc"]
+docs = ["jupyter", "quartodoc"]
+
+[project.scripts]
+hgpt = "hgpt.__main__:cli"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 120
+# Assume Python 3.11.
+target-version = "py311"
+
+# Enable the pycodestyle (`E`) and Pyflakes (`F`) rules by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+select = [
+  # pyflakes
+  "F",
+  # pycodestyle
+  "E", "W",
+  # isort
+  "I",
+  # pydocstyle 
+  # "D",
+  # pyupgrade 
+  # "UP",
+  # flake8-2020
+  "YTT",
+  # flake8-annotations
+  # "ANN",
+  # flake8-bandit: exec-builtin
+  "S102",
+  # flake8-bugbear
+  "B",
+  # flake8-comprehensions
+  "C4",
+  # flake8-debugger
+  "T10",
+  # flake8-future-annotations
+  "FA",
+  # implicit string concatenation
+  "ISC",
+  # flake8-logging-format
+  "G",
+  # flake8-pie
+  "PIE",
+  # flake8-pyi
+  "PYI",
+  # flake8-pytest-style
+  "PT",
+  # flake8-quotes
+  "Q",
+  # flake8-return
+  "RET",
+  # flake8-simplify
+  "SIM",
+  # flake8-tidy-imports
+  "TID",
+  # flake8-type-checking
+  "TCH",
+  # flake8-gettext
+  "INT",
+  # eradicate (commented-out code)
+  "ERA",
+  # pygrep-hooks
+  "PGH",
+  # pylint
+  "PL",
+  # NumPy-specific rules
+  "NPY",
+  # Perflint
+  "PERF",
+  # Ruff-specific rules
+  "RUF",
+]
+
+ignore = [
+  ### Intentionally disabled
+  # space before : (needed for how black formats slicing)
+  "E203",
+  # module level import not at top of file
+  "E402",
+  # do not assign a lambda expression, use a def
+  "E731",
+  # Line too long ({width} > {limit} characters)
+  "E501",
+  # controversial
+  "B006",
+  # controversial
+  "B008",
+  # zip() without an explicit strict= parameter
+  "B905",
+  # Too many arguments to function call
+  "PLR0913",
+  # Too many returns
+  "PLR0911",
+  # Too many branches
+  "PLR0912",
+  # Too many statements
+  "PLR0915",
+  # Redefined loop name
+  "PLW2901",
+  # Global statements are discouraged
+  "PLW0603",
+  # Needed for consistency with formatter
+  "ISC001",
+]
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+per-file-ignores = {}
+
+[tool.ruff.extend-per-file-ignores]
+# exclude Magic value used in comparison in tests
+"tests/*" = ["PLR2004"]

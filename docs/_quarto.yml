@@ -1,0 +1,35 @@
+project:
+  type: website
+  resources:
+    - "*.mp3"
+    - "*.wav"
+    - "*.mp4"
+    - "*.mov"
+
+website:
+  title: "Beatrix"
+  repo-url: https://github.com/JanPalasek/housing-gpt
+  repo-branch: main
+  repo-subdir: docs
+  search: true
+
+  navbar:
+    search: true
+    tools:
+      - icon: github
+        url: https://github.com/JanPalasek/housing-gpt
+    left:
+      - 
+        text: Developers
+        menu:
+          - developers/installation.qmd
+      - explorations.qmd
+
+format:
+  html:
+    toc: true
+    title-block-banner: false
+    lang: en
+
+execute:
+  freeze: false

@@ -1,0 +1,10 @@
+---
+title: Housing GPT
+format:
+    html:
+        toc: false
+---
+
+This is documentation page for Beatrix project. 
+
+* **Developers** - here you can find instructions to [install](developers/installation.qmd) this project.

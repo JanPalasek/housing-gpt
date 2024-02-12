@@ -1,0 +1,45 @@
+---
+title: Installation
+format:
+    html:
+        number-sections: true
+        number-depth: 2
+---
+
+In this document, we describe how to install this project from a developer's perspective. We will use VSCode Dev Containers.
+
+::: {.callout-important}
+
+Dev Containers is a Visual Studio Code feature. You need to use Visual Studio Code in order to develop this project.
+
+:::
+
+## Pre-requisities {.unnumbered}
+
+- Operation System: Linux or WSL2 on Windows.
+- Docker.
+- VSCode.
+    - Dev Containers Extension.
+    - (Windows) Remote - WSL extension.
+
+## Cloning the Project
+
+```sh
+git clone https://github.com/JanPalasek/housing-gpt
+```
+
+## Initialization
+
+Dev Container needs some variables in order to create itself properly. Therefor go to the root of this repository and run the following command in terminal:
+
+```{.sh}
+make init
+```
+
+This will initialize all the necessary environment variables for development.
+
+## Creating Dev Container
+
+In VSCode, press `Ctrl + Shift + P` and select `Dev Containers: Rebuild and Reopen in Container`.
+
+This step will take a while. It installs all the necessary libraries to develop in this project, like Python, R or Quarto. After the evaluation finishes, we should have the project opened in a Dev Container and we can develop as if we would work in any other project.
