@@ -1,7 +1,7 @@
 import scrapy
 
 
-class SrealitySpider(scrapy.Spider):
+class SRealitySpider(scrapy.Spider):
     name = "sreality"
 
     def start_requests(self):
