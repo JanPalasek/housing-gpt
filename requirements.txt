@@ -4,3 +4,246 @@
 #
 #    pip-compile --no-emit-index-url --output-file=requirements.txt pyproject.toml
 #
+aiohttp==3.9.3
+    # via
+    #   langchain
+    #   langchain-community
+aiosignal==1.3.1
+    # via aiohttp
+annotated-types==0.6.0
+    # via pydantic
+anyio==4.2.0
+    # via
+    #   httpx
+    #   langchain-core
+    #   openai
+attrs==23.2.0
+    # via
+    #   aiohttp
+    #   automat
+    #   service-identity
+    #   twisted
+automat==22.10.0
+    # via twisted
+certifi==2024.2.2
+    # via
+    #   httpcore
+    #   httpx
+    #   requests
+cffi==1.16.0
+    # via cryptography
+charset-normalizer==3.3.2
+    # via requests
+constantly==23.10.4
+    # via twisted
+cryptography==42.0.2
+    # via
+    #   pyopenssl
+    #   scrapy
+    #   service-identity
+cssselect==1.2.0
+    # via
+    #   parsel
+    #   scrapy
+dataclasses-json==0.6.4
+    # via
+    #   langchain
+    #   langchain-community
+distro==1.9.0
+    # via openai
+filelock==3.13.1
+    # via tldextract
+frozenlist==1.4.1
+    # via
+    #   aiohttp
+    #   aiosignal
+greenlet==3.0.3
+    # via
+    #   playwright
+    #   sqlalchemy
+h11==0.14.0
+    # via httpcore
+httpcore==1.0.2
+    # via httpx
+httpx==0.26.0
+    # via openai
+hyperlink==21.0.0
+    # via twisted
+idna==3.6
+    # via
+    #   anyio
+    #   httpx
+    #   hyperlink
+    #   requests
+    #   tldextract
+    #   yarl
+incremental==22.10.0
+    # via twisted
+itemadapter==0.8.0
+    # via
+    #   itemloaders
+    #   scrapy
+itemloaders==1.1.0
+    # via scrapy
+jmespath==1.0.1
+    # via
+    #   itemloaders
+    #   parsel
+jsonpatch==1.33
+    # via
+    #   langchain
+    #   langchain-core
+jsonpointer==2.4
+    # via jsonpatch
+langchain==0.1.6
+    # via housing-gpt (pyproject.toml)
+langchain-community==0.0.19
+    # via langchain
+langchain-core==0.1.22
+    # via
+    #   langchain
+    #   langchain-community
+    #   langchain-openai
+langchain-openai==0.0.5
+    # via housing-gpt (pyproject.toml)
+langsmith==0.0.87
+    # via
+    #   langchain
+    #   langchain-community
+    #   langchain-core
+lxml==5.1.0
+    # via
+    #   parsel
+    #   scrapy
+marshmallow==3.20.2
+    # via dataclasses-json
+multidict==6.0.5
+    # via
+    #   aiohttp
+    #   yarl
+mypy-extensions==1.0.0
+    # via typing-inspect
+numpy==1.26.4
+    # via
+    #   langchain
+    #   langchain-community
+    #   langchain-openai
+openai==1.12.0
+    # via langchain-openai
+packaging==23.2
+    # via
+    #   langchain-core
+    #   marshmallow
+    #   parsel
+    #   scrapy
+parsel==1.8.1
+    # via
+    #   itemloaders
+    #   scrapy
+playwright==1.41.2
+    # via
+    #   housing-gpt (pyproject.toml)
+    #   scrapy-playwright
+protego==0.3.0
+    # via scrapy
+pyasn1==0.5.1
+    # via
+    #   pyasn1-modules
+    #   service-identity
+pyasn1-modules==0.3.0
+    # via service-identity
+pycparser==2.21
+    # via cffi
+pydantic==2.6.1
+    # via
+    #   langchain
+    #   langchain-core
+    #   langsmith
+    #   openai
+pydantic-core==2.16.2
+    # via pydantic
+pydispatcher==2.0.7
+    # via scrapy
+pyee==11.0.1
+    # via playwright
+pyopenssl==24.0.0
+    # via scrapy
+pyyaml==6.0.1
+    # via
+    #   langchain
+    #   langchain-community
+    #   langchain-core
+queuelib==1.6.2
+    # via scrapy
+regex==2023.12.25
+    # via tiktoken
+requests==2.31.0
+    # via
+    #   langchain
+    #   langchain-community
+    #   langchain-core
+    #   langsmith
+    #   requests-file
+    #   tiktoken
+    #   tldextract
+requests-file==2.0.0
+    # via tldextract
+scrapy==2.11.1
+    # via
+    #   housing-gpt (pyproject.toml)
+    #   scrapy-playwright
+scrapy-playwright==0.0.34
+    # via housing-gpt (pyproject.toml)
+service-identity==24.1.0
+    # via scrapy
+six==1.16.0
+    # via automat
+sniffio==1.3.0
+    # via
+    #   anyio
+    #   httpx
+    #   openai
+sqlalchemy==2.0.27
+    # via
+    #   langchain
+    #   langchain-community
+tenacity==8.2.3
+    # via
+    #   langchain
+    #   langchain-community
+    #   langchain-core
+tiktoken==0.5.2
+    # via langchain-openai
+tldextract==5.1.1
+    # via scrapy
+tqdm==4.66.2
+    # via openai
+twisted==23.10.0
+    # via scrapy
+typing-extensions==4.9.0
+    # via
+    #   openai
+    #   pydantic
+    #   pydantic-core
+    #   pyee
+    #   sqlalchemy
+    #   twisted
+    #   typing-inspect
+typing-inspect==0.9.0
+    # via dataclasses-json
+urllib3==2.2.0
+    # via requests
+w3lib==2.1.2
+    # via
+    #   itemloaders
+    #   parsel
+    #   scrapy
+yarl==1.9.4
+    # via aiohttp
+zope-interface==6.1
+    # via
+    #   scrapy
+    #   twisted
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools

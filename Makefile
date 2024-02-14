@@ -6,6 +6,7 @@ init:
 
 install_dev:
 	$(PYTHON) -m pip install -r requirements-dev.txt -e .
+	$(PYTHON) -m playwright install chromium
 	$(PYTHON) -m pre_commit install
 
 compile:

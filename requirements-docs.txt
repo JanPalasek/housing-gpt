@@ -4,10 +4,20 @@
 #
 #    pip-compile --extra=docs --no-emit-index-url --output-file=requirements-docs.txt pyproject.toml
 #
+aiohttp==3.9.3
+    # via
+    #   langchain
+    #   langchain-community
+aiosignal==1.3.1
+    # via aiohttp
 annotated-types==0.6.0
     # via pydantic
 anyio==4.2.0
-    # via jupyter-server
+    # via
+    #   httpx
+    #   jupyter-server
+    #   langchain-core
+    #   openai
 argon2-cffi==23.1.0
     # via jupyter-server
 argon2-cffi-bindings==21.2.0
@@ -20,9 +30,15 @@ async-lru==2.0.4
     # via jupyterlab
 attrs==23.2.0
     # via
+    #   aiohttp
+    #   automat
     #   jsonschema
     #   referencing
+    #   service-identity
     #   sphobjinv
+    #   twisted
+automat==22.10.0
+    # via twisted
 babel==2.14.0
     # via jupyterlab-server
 beartype==0.17.1
@@ -33,10 +49,14 @@ bleach==6.1.0
     # via nbconvert
 certifi==2024.2.2
     # via
+    #   httpcore
+    #   httpx
     #   requests
     #   sphobjinv
 cffi==1.16.0
-    # via argon2-cffi-bindings
+    # via
+    #   argon2-cffi-bindings
+    #   cryptography
 charset-normalizer==3.3.2
     # via requests
 click==8.1.7
@@ -47,29 +67,70 @@ comm==0.2.1
     # via
     #   ipykernel
     #   ipywidgets
+constantly==23.10.4
+    # via twisted
+cryptography==42.0.2
+    # via
+    #   pyopenssl
+    #   scrapy
+    #   service-identity
+cssselect==1.2.0
+    # via
+    #   parsel
+    #   scrapy
+dataclasses-json==0.6.4
+    # via
+    #   langchain
+    #   langchain-community
 debugpy==1.8.1
     # via ipykernel
 decorator==5.1.1
     # via ipython
 defusedxml==0.7.1
     # via nbconvert
+distro==1.9.0
+    # via openai
 executing==2.0.1
     # via stack-data
 fastjsonschema==2.19.1
     # via nbformat
+filelock==3.13.1
+    # via tldextract
 fqdn==1.5.1
     # via jsonschema
+frozenlist==1.4.1
+    # via
+    #   aiohttp
+    #   aiosignal
+greenlet==3.0.3
+    # via
+    #   playwright
+    #   sqlalchemy
 griffe==0.40.1
     # via quartodoc
+h11==0.14.0
+    # via httpcore
+httpcore==1.0.2
+    # via httpx
+httpx==0.26.0
+    # via openai
+hyperlink==21.0.0
+    # via twisted
 idna==3.6
     # via
     #   anyio
+    #   httpx
+    #   hyperlink
     #   jsonschema
     #   requests
+    #   tldextract
+    #   yarl
 importlib-metadata==7.0.1
     # via quartodoc
 importlib-resources==6.1.1
     # via quartodoc
+incremental==22.10.0
+    # via twisted
 ipykernel==6.29.2
     # via
     #   jupyter
@@ -85,6 +146,12 @@ ipywidgets==8.1.2
     # via jupyter
 isoduration==20.11.0
     # via jsonschema
+itemadapter==0.8.0
+    # via
+    #   itemloaders
+    #   scrapy
+itemloaders==1.1.0
+    # via scrapy
 jedi==0.19.1
     # via ipython
 jinja2==3.1.3
@@ -93,10 +160,20 @@ jinja2==3.1.3
     #   jupyterlab
     #   jupyterlab-server
     #   nbconvert
+jmespath==1.0.1
+    # via
+    #   itemloaders
+    #   parsel
 json5==0.9.14
     # via jupyterlab-server
+jsonpatch==1.33
+    # via
+    #   langchain
+    #   langchain-core
 jsonpointer==2.4
-    # via jsonschema
+    # via
+    #   jsonpatch
+    #   jsonschema
 jsonschema[format-nongpl]==4.21.1
     # via
     #   jupyter-events
@@ -150,12 +227,34 @@ jupyterlab-server==2.25.2
     #   notebook
 jupyterlab-widgets==3.0.10
     # via ipywidgets
+langchain==0.1.6
+    # via housing-gpt (pyproject.toml)
+langchain-community==0.0.19
+    # via langchain
+langchain-core==0.1.22
+    # via
+    #   langchain
+    #   langchain-community
+    #   langchain-openai
+langchain-openai==0.0.5
+    # via housing-gpt (pyproject.toml)
+langsmith==0.0.87
+    # via
+    #   langchain
+    #   langchain-community
+    #   langchain-core
+lxml==5.1.0
+    # via
+    #   parsel
+    #   scrapy
 markdown-it-py==3.0.0
     # via rich
 markupsafe==2.1.5
     # via
     #   jinja2
     #   nbconvert
+marshmallow==3.20.2
+    # via dataclasses-json
 matplotlib-inline==0.1.6
     # via
     #   ipykernel
@@ -164,6 +263,12 @@ mdurl==0.1.2
     # via markdown-it-py
 mistune==3.0.2
     # via nbconvert
+multidict==6.0.5
+    # via
+    #   aiohttp
+    #   yarl
+mypy-extensions==1.0.0
+    # via typing-inspect
 nbclient==0.9.0
     # via nbconvert
 nbconvert==7.16.0
@@ -183,6 +288,13 @@ notebook-shim==0.2.3
     # via
     #   jupyterlab
     #   notebook
+numpy==1.26.4
+    # via
+    #   langchain
+    #   langchain-community
+    #   langchain-openai
+openai==1.12.0
+    # via langchain-openai
 overrides==7.7.0
     # via jupyter-server
 packaging==23.2
@@ -191,17 +303,29 @@ packaging==23.2
     #   jupyter-server
     #   jupyterlab
     #   jupyterlab-server
+    #   langchain-core
+    #   marshmallow
     #   nbconvert
+    #   parsel
     #   qtconsole
     #   qtpy
+    #   scrapy
 pandocfilters==1.5.1
     # via nbconvert
+parsel==1.8.1
+    # via
+    #   itemloaders
+    #   scrapy
 parso==0.8.3
     # via jedi
 pexpect==4.9.0
     # via ipython
 platformdirs==4.2.0
     # via jupyter-core
+playwright==1.41.2
+    # via
+    #   housing-gpt (pyproject.toml)
+    #   scrapy-playwright
 plum-dispatch==2.3.2
     # via quartodoc
 prometheus-client==0.19.0
@@ -210,6 +334,8 @@ prompt-toolkit==3.0.43
     # via
     #   ipython
     #   jupyter-console
+protego==0.3.0
+    # via scrapy
 psutil==5.9.8
     # via ipykernel
 ptyprocess==0.7.0
@@ -218,12 +344,27 @@ ptyprocess==0.7.0
     #   terminado
 pure-eval==0.2.2
     # via stack-data
+pyasn1==0.5.1
+    # via
+    #   pyasn1-modules
+    #   service-identity
+pyasn1-modules==0.3.0
+    # via service-identity
 pycparser==2.21
     # via cffi
 pydantic==2.6.1
-    # via quartodoc
+    # via
+    #   langchain
+    #   langchain-core
+    #   langsmith
+    #   openai
+    #   quartodoc
 pydantic-core==2.16.2
     # via pydantic
+pydispatcher==2.0.7
+    # via scrapy
+pyee==11.0.1
+    # via playwright
 pygments==2.17.2
     # via
     #   ipython
@@ -231,6 +372,8 @@ pygments==2.17.2
     #   nbconvert
     #   qtconsole
     #   rich
+pyopenssl==24.0.0
+    # via scrapy
 python-dateutil==2.8.2
     # via
     #   arrow
@@ -240,6 +383,9 @@ python-json-logger==2.0.7
 pyyaml==6.0.1
     # via
     #   jupyter-events
+    #   langchain
+    #   langchain-community
+    #   langchain-core
     #   quartodoc
 pyzmq==25.1.2
     # via
@@ -254,13 +400,27 @@ qtpy==2.4.1
     # via qtconsole
 quartodoc==0.7.2
     # via housing-gpt (pyproject.toml)
+queuelib==1.6.2
+    # via scrapy
 referencing==0.33.0
     # via
     #   jsonschema
     #   jsonschema-specifications
     #   jupyter-events
+regex==2023.12.25
+    # via tiktoken
 requests==2.31.0
-    # via jupyterlab-server
+    # via
+    #   jupyterlab-server
+    #   langchain
+    #   langchain-community
+    #   langchain-core
+    #   langsmith
+    #   requests-file
+    #   tiktoken
+    #   tldextract
+requests-file==2.0.0
+    # via tldextract
 rfc3339-validator==0.1.4
     # via
     #   jsonschema
@@ -275,30 +435,55 @@ rpds-py==0.17.1
     # via
     #   jsonschema
     #   referencing
+scrapy==2.11.1
+    # via
+    #   housing-gpt (pyproject.toml)
+    #   scrapy-playwright
+scrapy-playwright==0.0.34
+    # via housing-gpt (pyproject.toml)
 send2trash==1.8.2
     # via jupyter-server
+service-identity==24.1.0
+    # via scrapy
 six==1.16.0
     # via
     #   asttokens
+    #   automat
     #   bleach
     #   python-dateutil
     #   rfc3339-validator
 sniffio==1.3.0
-    # via anyio
+    # via
+    #   anyio
+    #   httpx
+    #   openai
 soupsieve==2.5
     # via beautifulsoup4
 sphobjinv==2.3.1
     # via quartodoc
+sqlalchemy==2.0.27
+    # via
+    #   langchain
+    #   langchain-community
 stack-data==0.6.3
     # via ipython
 tabulate==0.9.0
     # via quartodoc
+tenacity==8.2.3
+    # via
+    #   langchain
+    #   langchain-community
+    #   langchain-core
 terminado==0.18.0
     # via
     #   jupyter-server
     #   jupyter-server-terminals
+tiktoken==0.5.2
+    # via langchain-openai
 tinycss2==1.2.1
     # via nbconvert
+tldextract==5.1.1
+    # via scrapy
 tornado==6.4
     # via
     #   ipykernel
@@ -307,6 +492,8 @@ tornado==6.4
     #   jupyterlab
     #   notebook
     #   terminado
+tqdm==4.66.2
+    # via openai
 traitlets==5.14.1
     # via
     #   comm
@@ -324,17 +511,31 @@ traitlets==5.14.1
     #   nbconvert
     #   nbformat
     #   qtconsole
+twisted==23.10.0
+    # via scrapy
 types-python-dateutil==2.8.19.20240106
     # via arrow
 typing-extensions==4.9.0
     # via
+    #   openai
     #   pydantic
     #   pydantic-core
+    #   pyee
     #   quartodoc
+    #   sqlalchemy
+    #   twisted
+    #   typing-inspect
+typing-inspect==0.9.0
+    # via dataclasses-json
 uri-template==1.3.0
     # via jsonschema
 urllib3==2.2.0
     # via requests
+w3lib==2.1.2
+    # via
+    #   itemloaders
+    #   parsel
+    #   scrapy
 watchdog==4.0.0
     # via quartodoc
 wcwidth==0.2.13
@@ -349,5 +550,14 @@ websocket-client==1.7.0
     # via jupyter-server
 widgetsnbextension==4.0.10
     # via ipywidgets
+yarl==1.9.4
+    # via aiohttp
 zipp==3.17.0
     # via importlib-metadata
+zope-interface==6.1
+    # via
+    #   scrapy
+    #   twisted
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools

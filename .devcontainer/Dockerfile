@@ -10,7 +10,12 @@ ARG QUARTO_VERSION=1.4.549
 
 # Install Package dependencies
 RUN apt-get update && apt-get install -y \
-    r-base sudo git-lfs && \
+    sudo git-lfs \
+    libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 \
+    libcups2 libxkbcommon0 libatspi2.0-0 \
+    libxdamage1 libasound2 libdrm2 \
+    libxcomposite1 libxfixes3 libxrandr2 \
+    libgbm1 && \
     git lfs install && \
     rm -rf /var/lib/apt/lists/*
 
