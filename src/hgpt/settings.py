@@ -7,6 +7,12 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
 BOT_NAME = "hgpt"
 
 SPIDER_MODULES = ["hgpt.spiders"]
@@ -51,3 +57,5 @@ DOWNLOAD_HANDLERS = {
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
+
+ROOT_URL = os.getenv("ROOT_URL")
