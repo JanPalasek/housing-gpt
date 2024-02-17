@@ -218,3 +218,6 @@ docs/.quarto/
 docs/objects.json
 docs/api/
 docs/_site/
+
+data/*
+!data/.keep

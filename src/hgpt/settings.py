@@ -14,13 +14,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 BOT_NAME = "hgpt"
+ROOT_URL = os.getenv("ROOT_URL")
+OUT_PATH = os.getenv("OUT_PATH", "data/real_estates.jsonl")
+MAX_DETAIL_PAGES = int(os.getenv("MAX_DETAIL_PAGES", "1"))
 
 SPIDER_MODULES = ["hgpt.spiders"]
 NEWSPIDER_MODULE = "hgpt.spiders"
 
 LOG_LEVEL = "INFO"
-
-MAX_DETAIL_PAGES = 3
+LOG_FILE = f"{BOT_NAME}.log"
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = "hgpt"
@@ -57,7 +59,7 @@ DOWNLOAD_HANDLERS = {
 # ITEM_PIPELINES = { "hgpt.pipelines.ExtractPipeline": 300 }  # noqa: ERA001
 
 FEEDS = {
-    "./items.jsonl": {
+    OUT_PATH: {
         "format": "jsonlines",
         "encoding": "utf8",
         "store_empty": False,
@@ -71,6 +73,3 @@ FEEDS = {
 # Set settings whose default value is deprecated to a future-proof value
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
-FEED_EXPORT_ENCODING = "utf-8"
-
-ROOT_URL = os.getenv("ROOT_URL")

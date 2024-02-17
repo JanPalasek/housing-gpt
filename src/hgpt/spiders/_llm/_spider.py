@@ -1,3 +1,6 @@
+import logging
+import sys
+
 import scrapy
 from langchain_openai import ChatOpenAI
 from scrapy.responsetypes import Response
@@ -17,6 +20,11 @@ class LLMSpider(scrapy.Spider):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        handler = logging.StreamHandler(sys.stdout)
+        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+        handler.setFormatter(formatter)
+        logging.getLogger(self.logger.name).addHandler(handler)
+
         # create crawl chain
         model = ChatOpenAI(model="gpt-4-0125-preview")
         self.list_chain = create_list_chain(model)
@@ -29,12 +37,13 @@ class LLMSpider(scrapy.Spider):
         # go to root request url, it should be a parse list
         yield scrapy.Request(self.settings.get("ROOT_URL"), meta=META, callback=self.parse_list)
 
+    @property
     def _continue_scraping(self) -> bool:
         return self.searched_detail_pages < self.settings.get("MAX_DETAIL_PAGES")
 
     async def parse_list(self, response: Response):
         # scraped max pages => stop
-        if not self._continue_scraping():
+        if not self._continue_scraping:
             return
 
         # extract all urls, remove duplicates
@@ -43,12 +52,14 @@ class LLMSpider(scrapy.Spider):
 
         # process urls by gpt
         input_ = "\n".join(urls)
+        self.logger.info("Extracting list page on url '%s'...", response.url)
         result: RealEstateListPage = await self.list_chain.ainvoke({"input": input_, "current_url": response.url})
+        self.logger.info("Extracted '%s'. Next page: %s", response.url, result.next_list_page)
 
         # go over all real estate detail urls and search them
         for url in result.detail_page_urls:
             # scraped max pages => break
-            if not self._continue_scraping():
+            if not self._continue_scraping:
                 return
             self.searched_detail_pages += 1
             yield scrapy.Request(response.urljoin(url), meta=META, callback=self.parse_detail)
@@ -62,7 +73,9 @@ class LLMSpider(scrapy.Spider):
         input_ = " ".join([text.strip() for text in text_nodes if text.strip()])
 
         # parse output
+        self.logger.info("Started extracting detail page information on url '%s'...", response.url)
         result: RealEstate = await self.detail_chain.ainvoke({"input": input_})
+        self.logger.info("Finished extracting detail page information on url '%s'...", response.url)
         result_dict = result.dict()
         result_dict["url"] = response.url
         yield result_dict
