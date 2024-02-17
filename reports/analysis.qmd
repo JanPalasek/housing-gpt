@@ -1,12 +1,11 @@
 ---
-title: Analysis
+title: Real Estates
+date: today
 format:
-    html:
-        toc: true
-        toc-depth: 3
-        page-layout: full
-execute:
-    echo: false
+    dashboard:
+        orientation: rows
+        scrolling: true
+server: shiny
 ---
 
 
@@ -14,11 +13,12 @@ execute:
 import polars as pl
 import seaborn.objects as so
 import profiplots as pf
-from itables import init_notebook_mode
+import itables
+from shiny import render, ui
 
-init_notebook_mode(all_interactive=False)
+itables.init_notebook_mode(all_interactive=False)
 
-pf.set_theme()
+_ = pf.set_theme()
 ```
 
 
@@ -52,11 +52,192 @@ cdata = (
         pl.col("monthly_fees"),
         pl.col("url"),
     )
+    .sort(by="duration_1", descending=False)
 )
 ```
 
-```{python}
-from itables import show
+## {.sidebar}
 
-show(cdata.to_pandas(), lengthMenu=[10, 25, 50, 100, 250])
+```{python}
+ui.input_select("address", "Address:",
+                choices=cdata["address"].to_list())
+```
+
+## Column {.flow}
+
+### Row
+
+#### Column {height="33%"}
+
+```{python}
+@render.ui
+def price():
+    row = cdata.filter(pl.col("address") == input.address()).to_pandas().iloc[0]
+    price = int(row["price"])
+    return ui.value_box("Price (Kč)", price)
+```
+
+#### Column {height="33%"}
+
+```{python}
+@render.ui
+def area():
+    row = cdata.filter(pl.col("address") == input.address()).to_pandas().iloc[0]
+    floor_area = int(row["floor_area"])
+    return ui.value_box("Area (m2)", floor_area)
+```
+
+#### Column {height="33%"}
+
+```{python}
+@render.ui
+def layout():
+    row = cdata.filter(pl.col("address") == input.address()).to_pandas().iloc[0]
+    layout = row["layout"]
+    return ui.value_box("Layout", layout)
+```
+
+### Row
+
+#### Column {height="40%"}
+
+```{python}
+@render.ui
+def duration_1():
+    row = (
+        data.filter(pl.col("location").struct.field("address") == input.address())
+        .select(pl.col("travel").list[0].struct.field("duration").alias("duration"), pl.col("travel").list[0].struct.field("to_address").alias("address"))
+        .to_pandas()
+        .iloc[0]
+    )
+    address = row["address"]
+    duration = int(row["duration"])
+    return ui.value_box(f"Travel Time ({address})", duration)
+```
+
+#### Column {height="40%"}
+
+```{python}
+@render.ui
+def duration_2():
+    row = (
+        data.filter(pl.col("location").struct.field("address") == input.address())
+        .select(pl.col("travel").list[1].struct.field("duration").alias("duration"), pl.col("travel").list[1].struct.field("to_address").alias("address"))
+        .to_pandas()
+        .iloc[0]
+    )
+    address = row["address"]
+    duration = int(row["duration"])
+    return ui.value_box(f"Travel Time ({address})", duration)
+```
+
+### Row
+
+#### Column
+
+```{python}
+@render.ui
+def area_2():
+    row = cdata.filter(pl.col("address") == input.address()).to_pandas().iloc[0]
+    area = int(row["floor_area"])
+    return ui.value_box("Floor Area (m2)", area)
+```
+
+#### Column
+
+```{python}
+@render.ui
+def balcony_loggia_area():
+    row = cdata.filter(pl.col("address") == input.address()).to_pandas().iloc[0]
+    balcony = int(row["balcony_area"])
+    loggia = int(row["loggia_area"])
+    return ui.value_box("Balcony / Loggia (m2)", balcony + loggia)
+```
+
+#### Column
+
+```{python}
+@render.ui
+def cellar_pantry():
+    row = (
+        data.filter(pl.col("location").struct.field("address") == input.address())
+        .select(pl.col("size").struct.field("cellar_area").alias("cellar_area"), pl.col("size").struct.field("pantry_area").alias("pantry_area"))
+        .to_pandas()
+        .iloc[0]
+    )
+    pantry = int(row["pantry_area"])
+    cellar = int(row["cellar_area"])
+    return ui.value_box("Cellar / Pantry (m2)", cellar + pantry)
+```
+
+### Row
+
+#### Column
+```{python}
+@render.ui
+def bottom_level():
+    row = (
+        data.filter(pl.col("location").struct.field("address") == input.address())
+        .select(pl.col("location").struct.field("floor_level"))
+        .to_pandas()
+        .iloc[0]
+    )
+    floor_level = int(row["floor_level"])
+    return ui.value_box("Floor Level", floor_level)
+```
+
+#### Column
+```{python}
+@render.ui
+def total_levels():
+    row = (
+        data.filter(pl.col("location").struct.field("address") == input.address())
+        .select(pl.col("location").struct.field("total_floor_levels"))
+        .to_pandas()
+        .iloc[0]
+    )
+    total_floor_levels = int(row["total_floor_levels"])
+    return ui.value_box("Total Floors", total_floor_levels)
+```
+
+### Row
+
+
+#### Column
+```{python}
+@render.ui
+def built_year():
+    row = (
+        data.filter(pl.col("location").struct.field("address") == input.address())
+        .select(pl.col("state").struct.field("built_year"))
+        .to_pandas()
+        .iloc[0]
+    )
+    built_year = int(row["built_year"])
+    return ui.value_box("Built (Year)", built_year)
+```
+
+#### Column
+```{python}
+@render.ui
+def reconstructed_year():
+    row = (
+        data.filter(pl.col("location").struct.field("address") == input.address())
+        .select(pl.col("state").struct.field("reconstructed_year"))
+        .to_pandas()
+        .iloc[0]
+    )
+    reconstructed_year = int(row["reconstructed_year"])
+    return ui.value_box("Reconstructed (Year)", reconstructed_year)
+```
+
+### Row
+
+```{python}
+#| title: Url
+@render.ui
+def url():
+    row = cdata.filter(pl.col("address") == input.address()).to_pandas().iloc[0]
+    url = row["url"]
+    return url
 ```

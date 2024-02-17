@@ -9,7 +9,7 @@ version = "0.1"
 dependencies = ["langchain", "langchain-openai", "scrapy", "playwright", "scrapy-playwright"]
 
 [project.optional-dependencies]
-dev = ["python-dotenv", "polars", "pyarrow", "itables", "seaborn", "profiplots", "googlemaps", "pip-tools", "ruff", "pre-commit", "jupyter", "quartodoc"]
+dev = ["python-dotenv", "polars", "pyarrow", "itables", "seaborn", "profiplots", "googlemaps", "pip-tools", "ruff", "pre-commit", "jupyter", "quartodoc", "shiny", "shinywidgets"]
 docs = ["jupyter", "quartodoc"]
 googlemaps = ["googlemaps"]
 

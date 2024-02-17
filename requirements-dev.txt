@@ -18,12 +18,18 @@ anyio==4.2.0
     #   jupyter-server
     #   langchain-core
     #   openai
+    #   starlette
+    #   watchfiles
+appdirs==1.4.4
+    # via shiny
 argon2-cffi==23.1.0
     # via jupyter-server
 argon2-cffi-bindings==21.2.0
     # via argon2-cffi
 arrow==1.3.0
     # via isoduration
+asgiref==3.7.2
+    # via shiny
 asttokens==2.4.1
     # via stack-data
 async-lru==2.0.4
@@ -67,6 +73,8 @@ click==8.1.7
     # via
     #   pip-tools
     #   quartodoc
+    #   shiny
+    #   uvicorn
 colorama==0.4.6
     # via griffe
 comm==0.2.1
@@ -127,7 +135,11 @@ greenlet==3.0.3
 griffe==0.40.1
     # via quartodoc
 h11==0.14.0
-    # via httpcore
+    # via
+    #   httpcore
+    #   uvicorn
+htmltools==0.5.1
+    # via shiny
 httpcore==1.0.2
     # via httpx
 httpx==0.26.0
@@ -164,7 +176,9 @@ ipython==8.21.0
     #   itables
     #   jupyter-console
 ipywidgets==8.1.2
-    # via jupyter
+    # via
+    #   jupyter
+    #   shinywidgets
 isoduration==20.11.0
     # via jsonschema
 itables==1.7.0
@@ -227,6 +241,7 @@ jupyter-core==5.7.1
     #   nbconvert
     #   nbformat
     #   qtconsole
+    #   shinywidgets
 jupyter-events==0.9.0
     # via jupyter-server
 jupyter-lsp==2.2.2
@@ -268,12 +283,17 @@ langsmith==0.0.87
     #   langchain
     #   langchain-community
     #   langchain-core
+linkify-it-py==2.0.3
+    # via shiny
 lxml==5.1.0
     # via
     #   parsel
     #   scrapy
 markdown-it-py==3.0.0
-    # via rich
+    # via
+    #   mdit-py-plugins
+    #   rich
+    #   shiny
 markupsafe==2.1.5
     # via
     #   jinja2
@@ -288,6 +308,8 @@ matplotlib-inline==0.1.6
     # via
     #   ipykernel
     #   ipython
+mdit-py-plugins==0.4.0
+    # via shiny
 mdurl==0.1.2
     # via markdown-it-py
 mistune==3.0.2
@@ -337,6 +359,7 @@ overrides==7.7.0
 packaging==23.2
     # via
     #   build
+    #   htmltools
     #   ipykernel
     #   jupyter-server
     #   jupyterlab
@@ -441,10 +464,13 @@ python-dateutil==2.8.2
     #   jupyter-client
     #   matplotlib
     #   pandas
+    #   shinywidgets
 python-dotenv==1.0.1
     # via housing-gpt (pyproject.toml)
 python-json-logger==2.0.7
     # via jupyter-events
+python-multipart==0.0.9
+    # via shiny
 pytz==2024.1
     # via pandas
 pyyaml==6.0.1
@@ -520,6 +546,12 @@ send2trash==1.8.2
     # via jupyter-server
 service-identity==24.1.0
     # via scrapy
+shiny==0.6.0
+    # via
+    #   housing-gpt (pyproject.toml)
+    #   shinywidgets
+shinywidgets==0.2.4
+    # via housing-gpt (pyproject.toml)
 six==1.16.0
     # via
     #   asttokens
@@ -542,6 +574,8 @@ sqlalchemy==2.0.27
     #   langchain-community
 stack-data==0.6.3
     # via ipython
+starlette==0.37.1
+    # via shiny
 tabulate==0.9.0
     # via quartodoc
 tenacity==8.2.3
@@ -592,11 +626,13 @@ types-python-dateutil==2.8.19.20240106
     # via arrow
 typing-extensions==4.9.0
     # via
+    #   htmltools
     #   openai
     #   pydantic
     #   pydantic-core
     #   pyee
     #   quartodoc
+    #   shiny
     #   sqlalchemy
     #   twisted
     #   typing-inspect
@@ -604,10 +640,14 @@ typing-inspect==0.9.0
     # via dataclasses-json
 tzdata==2024.1
     # via pandas
+uc-micro-py==1.0.3
+    # via linkify-it-py
 uri-template==1.3.0
     # via jsonschema
 urllib3==2.2.0
     # via requests
+uvicorn==0.27.1
+    # via shiny
 virtualenv==20.25.0
     # via pre-commit
 w3lib==2.1.2
@@ -617,6 +657,8 @@ w3lib==2.1.2
     #   scrapy
 watchdog==4.0.0
     # via quartodoc
+watchfiles==0.21.0
+    # via shiny
 wcwidth==0.2.13
     # via prompt-toolkit
 webcolors==1.13
@@ -627,6 +669,8 @@ webencodings==0.5.1
     #   tinycss2
 websocket-client==1.7.0
     # via jupyter-server
+websockets==12.0
+    # via shiny
 wheel==0.42.0
     # via pip-tools
 widgetsnbextension==4.0.10

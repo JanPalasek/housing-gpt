@@ -1,5 +1,6 @@
 import logging
 import sys
+from datetime import datetime
 
 import scrapy
 from langchain_openai import ChatOpenAI
@@ -82,4 +83,5 @@ class LLMSpider(scrapy.Spider):
         )
         result_dict = result.dict()
         result_dict["url"] = response.url
+        result_dict["dt"] = datetime.now()
         yield result_dict
