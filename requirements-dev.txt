@@ -161,11 +161,14 @@ ipython==8.21.0
     # via
     #   ipykernel
     #   ipywidgets
+    #   itables
     #   jupyter-console
 ipywidgets==8.1.2
     # via jupyter
 isoduration==20.11.0
     # via jsonschema
+itables==1.7.0
+    # via housing-gpt (pyproject.toml)
 itemadapter==0.8.0
     # via
     #   itemloaders
@@ -319,11 +322,13 @@ notebook-shim==0.2.3
 numpy==1.26.4
     # via
     #   contourpy
+    #   itables
     #   langchain
     #   langchain-community
     #   langchain-openai
     #   matplotlib
     #   pandas
+    #   pyarrow
     #   seaborn
 openai==1.12.0
     # via langchain-openai
@@ -345,7 +350,9 @@ packaging==23.2
     #   qtpy
     #   scrapy
 pandas==2.2.0
-    # via seaborn
+    # via
+    #   itables
+    #   seaborn
 pandocfilters==1.5.1
     # via nbconvert
 parsel==1.8.1
@@ -392,6 +399,8 @@ ptyprocess==0.7.0
     #   terminado
 pure-eval==0.2.2
     # via stack-data
+pyarrow==15.0.0
+    # via housing-gpt (pyproject.toml)
 pyasn1==0.5.1
     # via
     #   pyasn1-modules

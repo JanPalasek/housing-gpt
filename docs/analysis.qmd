@@ -1,0 +1,62 @@
+---
+title: Analysis
+format:
+    html:
+        toc: true
+        toc-depth: 3
+        page-layout: full
+execute:
+    echo: false
+---
+
+
+```{python}
+import polars as pl
+import seaborn.objects as so
+import profiplots as pf
+from itables import init_notebook_mode
+
+init_notebook_mode(all_interactive=False)
+
+pf.set_theme()
+```
+
+
+```{python}
+data = (
+    pl.read_ndjson("../data/real_estates.jsonl")
+    .unique(subset=["url"], keep="last")
+)
+```
+
+```{python}
+cdata = (
+    data
+    .select(
+        pl.col("location").struct.field("address"),
+        pl.col("price"),
+        # travel
+        pl.col("travel").list[0].struct.field("duration").alias("duration_1"),
+        pl.col("travel").list[1].struct.field("duration").alias("duration_2"),
+        # level
+        pl.col("location").struct.field("floor_level"),
+        pl.col("location").struct.field("total_floor_levels"),
+        # size
+        pl.col("layout"),
+        pl.col("size").struct.field("floor_area"),
+        pl.col("size").struct.field("balcony_area"),
+        pl.col("size").struct.field("loggia_area"),
+        # state
+        pl.col("state").struct.field("built_year"),
+        pl.col("state").struct.field("reconstructed_year"),
+        pl.col("monthly_fees"),
+        pl.col("url"),
+    )
+)
+```
+
+```{python}
+from itables import show
+
+show(cdata.to_pandas(), lengthMenu=[10, 25, 50, 100, 250])
+```

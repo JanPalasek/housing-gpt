@@ -24,6 +24,9 @@ website:
         menu:
           - developers/installation.qmd
       -
+        text: Analysis
+        href: analysis.qmd
+      -
         text: API
         href: api/index.qmd
 

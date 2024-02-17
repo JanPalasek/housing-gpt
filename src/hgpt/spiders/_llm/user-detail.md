@@ -1,2 +1,4 @@
-Human: <INPUT>{input}</INPUT>
+Human:
+<INPUT>{input}</INPUT>
+
 Assistant: 
