@@ -53,6 +53,18 @@ DOWNLOAD_HANDLERS = {
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 # ITEM_PIPELINES = { "hgpt.pipelines.ExtractPipeline": 300 }  # noqa: ERA001
 
+FEED_EXPORTERS = {
+    "items.jl": {
+        "format": "jsonlines",
+        "encoding": "utf8",
+        "store_empty": False,
+        "indent": None,
+        "item_export_kwargs": {
+            "export_empty_fields": True,
+        },
+    },
+}
+
 # Set settings whose default value is deprecated to a future-proof value
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"

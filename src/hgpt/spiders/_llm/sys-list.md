@@ -9,6 +9,6 @@ Your goal is to extract urls as specified in the FORMAT section. Be wary that th
 
 ## FORMAT
 
-Input is located after "Human: " string inside <INPUT> tag. <INPUT> contains list of urls separated by a newline.
+Input is located after "Human: " string inside <INPUT> tag. <INPUT> contains list of urls separated by a newline. <CURRENT URL> contains page of the current url.
 
 The output must be located after "Assistant: " string. `{format_instructions}`

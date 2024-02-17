@@ -6,18 +6,12 @@ from langchain.prompts.chat import ChatPromptTemplate, HumanMessagePromptTemplat
 from pydantic.v1 import BaseModel, Field
 
 
-class RealEstateDetailPage(BaseModel):
-    reasoning: str = Field(
-        description="Detailed step-by-step reasoning explaining why the assistant thinks that this url is pointing to a detail page."
-    )
-    url: str = Field(
-        description="Url of the detail real estate page. Does not need to be a full url, can only be its part."
-    )
-
-
 class RealEstateListPage(BaseModel):
-    detail_pages: List[RealEstateDetailPage] = Field(
-        description="List of real estates detail pages. A detail page is a page that contains a detailed information about the real estate, such as its price etc."
+    reasoning: str = Field(
+        description="Detailed step-by-step reasoning explaining what kind of urls, based on the input data, do the real estates have. It must also explain which page is the next. The assistant should use both input and current url in the reasoning process."
+    )
+    detail_page_urls: List[str] = Field(
+        description="List of real estates detail pages urls. A detail page is a page that contains a detailed information about the real estate, such as its price etc. The urls do not need to be full urls. It can only be parts."
     )
     next_list_page: str = Field(
         default=None,
@@ -39,5 +33,5 @@ def create_chain(model):
             ]
         ).partial(format_instructions=output_parser.get_format_instructions())
         | model
-        | OutputFixingParser.from_llm(parser=output_parser, llm=model)
+        | OutputFixingParser.from_llm(parser=output_parser, llm=model, max_retries=3)
     )
