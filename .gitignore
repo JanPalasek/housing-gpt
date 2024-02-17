@@ -221,3 +221,6 @@ docs/_site/
 
 data/*
 !data/.keep
+
+reports/analysis.html
+reports/analysis_files
