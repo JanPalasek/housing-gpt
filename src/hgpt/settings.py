@@ -18,6 +18,9 @@ BOT_NAME = "hgpt"
 SPIDER_MODULES = ["hgpt.spiders"]
 NEWSPIDER_MODULE = "hgpt.spiders"
 
+LOG_LEVEL = "INFO"
+
+MAX_DETAIL_PAGES = 3
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = "hgpt"
@@ -53,8 +56,8 @@ DOWNLOAD_HANDLERS = {
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 # ITEM_PIPELINES = { "hgpt.pipelines.ExtractPipeline": 300 }  # noqa: ERA001
 
-FEED_EXPORTERS = {
-    "items.jl": {
+FEEDS = {
+    "./items.jsonl": {
         "format": "jsonlines",
         "encoding": "utf8",
         "store_empty": False,

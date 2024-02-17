@@ -1,5 +1,4 @@
 import os
-from typing import List
 
 from langchain.output_parsers import OutputFixingParser, PydanticOutputParser
 from langchain.prompts.chat import ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate
@@ -22,19 +21,28 @@ class Size(BaseModel):
     balcony: bool = Field(
         default=None, description="If the real estate has a balcony, this field must be true. Otherwise false."
     )
-    balcony_area: float = Field(default=None, description="Size of the balcony. Typically described in meters squared.")
+    balcony_area: float = Field(
+        default=None,
+        description="Size of the balcony. Typically described in meters squared. Should only contain number if property has a balcony.",
+    )
     loggia: bool = Field(
         default=None, description="If this real estate has a loggia, this field must be true. Otherwise false."
     )
-    loggia_area: float = Field(default=None, description="Size of the loggia.")
+    loggia_area: float = Field(
+        default=None, description="Size of the loggia. Should only contain number if property has a loggia."
+    )
     cellar: bool = Field(
         default=None, description="If the real estate has a cellar, this field must be true. Otherwise false."
     )
-    cellar_area: float = Field(default=None, description="Size of the cellar.")
+    cellar_area: float = Field(
+        default=None, description="Size of the cellar. Should only contain number if property has a cellar."
+    )
     pantry: bool = Field(
         default=None, description="If the flat has a pantry, this field must be true. Otherwise false."
     )
-    pantry_area: float = Field(default=None, description="Size of the pantry.")
+    pantry_area: float = Field(
+        default=None, description="Size of the pantry. Should only contain number if property has a pantry."
+    )
 
 
 class PropertyState(BaseModel):
@@ -59,7 +67,7 @@ class RealEstate(BaseModel):
         description="Price of the real-estate property. If there is not number describing the price, it should be null.",
     )
     additional_fees: bool = Field(
-        default=False,
+        default=None,
         description="Sometimes the price is not complete and it is also necessary to pay for real estate agent etc. If so, this field must be true.",
     )
     monthly_fees: float = Field(
@@ -71,7 +79,7 @@ class RealEstate(BaseModel):
     size: Size = Field(description="Size properties of the real estate.")
     location: Location = Field(description="Field 'location' describes the location of the apartment.")
     state: PropertyState = Field(description="Describes, what shape the property is in.")
-    image_urls: List[str] = Field(default=[], description="Urls to images showing the property.")
+    elevator: bool = Field(description="If the real estate has an elevator, the 'elevator' field should be true.")
 
 
 def create_chain(model):
