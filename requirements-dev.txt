@@ -75,6 +75,8 @@ comm==0.2.1
     #   ipywidgets
 constantly==23.10.4
     # via twisted
+contourpy==1.2.0
+    # via matplotlib
 cryptography==42.0.2
     # via
     #   pyopenssl
@@ -84,6 +86,8 @@ cssselect==1.2.0
     # via
     #   parsel
     #   scrapy
+cycler==0.12.1
+    # via matplotlib
 dataclasses-json==0.6.4
     # via
     #   langchain
@@ -106,6 +110,8 @@ filelock==3.13.1
     # via
     #   tldextract
     #   virtualenv
+fonttools==4.49.0
+    # via matplotlib
 fqdn==1.5.1
     # via jsonschema
 frozenlist==1.4.1
@@ -241,6 +247,8 @@ jupyterlab-server==2.25.2
     #   notebook
 jupyterlab-widgets==3.0.10
     # via ipywidgets
+kiwisolver==1.4.5
+    # via matplotlib
 langchain==0.1.6
     # via housing-gpt (pyproject.toml)
 langchain-community==0.0.19
@@ -269,6 +277,10 @@ markupsafe==2.1.5
     #   nbconvert
 marshmallow==3.20.2
     # via dataclasses-json
+matplotlib==3.8.3
+    # via
+    #   profiplots
+    #   seaborn
 matplotlib-inline==0.1.6
     # via
     #   ipykernel
@@ -306,9 +318,13 @@ notebook-shim==0.2.3
     #   notebook
 numpy==1.26.4
     # via
+    #   contourpy
     #   langchain
     #   langchain-community
     #   langchain-openai
+    #   matplotlib
+    #   pandas
+    #   seaborn
 openai==1.12.0
     # via langchain-openai
 overrides==7.7.0
@@ -322,11 +338,14 @@ packaging==23.2
     #   jupyterlab-server
     #   langchain-core
     #   marshmallow
+    #   matplotlib
     #   nbconvert
     #   parsel
     #   qtconsole
     #   qtpy
     #   scrapy
+pandas==2.2.0
+    # via seaborn
 pandocfilters==1.5.1
     # via nbconvert
 parsel==1.8.1
@@ -337,6 +356,8 @@ parso==0.8.3
     # via jedi
 pexpect==4.9.0
     # via ipython
+pillow==10.2.0
+    # via matplotlib
 pip-tools==7.3.0
     # via housing-gpt (pyproject.toml)
 platformdirs==4.2.0
@@ -349,7 +370,11 @@ playwright==1.41.2
     #   scrapy-playwright
 plum-dispatch==2.3.2
     # via quartodoc
+polars==0.20.9
+    # via housing-gpt (pyproject.toml)
 pre-commit==3.6.1
+    # via housing-gpt (pyproject.toml)
+profiplots==2.1.4
     # via housing-gpt (pyproject.toml)
 prometheus-client==0.19.0
     # via jupyter-server
@@ -397,16 +422,22 @@ pygments==2.17.2
     #   rich
 pyopenssl==24.0.0
     # via scrapy
+pyparsing==3.1.1
+    # via matplotlib
 pyproject-hooks==1.0.0
     # via build
 python-dateutil==2.8.2
     # via
     #   arrow
     #   jupyter-client
+    #   matplotlib
+    #   pandas
 python-dotenv==1.0.1
     # via housing-gpt (pyproject.toml)
 python-json-logger==2.0.7
     # via jupyter-events
+pytz==2024.1
+    # via pandas
 pyyaml==6.0.1
     # via
     #   jupyter-events
@@ -472,6 +503,10 @@ scrapy==2.11.1
     #   scrapy-playwright
 scrapy-playwright==0.0.34
     # via housing-gpt (pyproject.toml)
+seaborn==0.13.2
+    # via
+    #   housing-gpt (pyproject.toml)
+    #   profiplots
 send2trash==1.8.2
     # via jupyter-server
 service-identity==24.1.0
@@ -558,6 +593,8 @@ typing-extensions==4.9.0
     #   typing-inspect
 typing-inspect==0.9.0
     # via dataclasses-json
+tzdata==2024.1
+    # via pandas
 uri-template==1.3.0
     # via jsonschema
 urllib3==2.2.0

@@ -11,7 +11,7 @@ from hgpt.spiders._llm._detail import create_chain as create_detail_chain
 from hgpt.spiders._llm._list import RealEstateListPage
 from hgpt.spiders._llm._list import create_chain as create_list_chain
 
-META = {"playwright": True, "playwright_page_coroutines": [PageMethod("wait_for_timeout", 20000)]}
+META = {"playwright": True, "playwright_page_coroutines": [PageMethod("wait_for_timeout", 30000)]}
 
 
 class LLMSpider(scrapy.Spider):
@@ -74,7 +74,12 @@ class LLMSpider(scrapy.Spider):
         # parse output
         self.logger.info("Started extracting detail page information on url '%s'...", response.url)
         result: RealEstate = await self.detail_chain.ainvoke({"input": input_})
-        self.logger.info("Finished extracting detail page information on url '%s'...", response.url)
+        self.logger.info(
+            "Finished extracting detail page information on url '%s'... Price: %s, address: %s",
+            response.url,
+            result.price,
+            result.location.address,
+        )
         result_dict = result.dict()
         result_dict["url"] = response.url
         yield result_dict

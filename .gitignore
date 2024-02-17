@@ -221,3 +221,4 @@ docs/_site/
 
 data/*
 !data/.keep
+docs/analysis.qmd
