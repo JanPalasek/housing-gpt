@@ -7,19 +7,21 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+import contextlib
+import json
 import os
 
-try:
+with contextlib.suppress(ImportError):
     from dotenv import load_dotenv
 
     load_dotenv()
-except ImportError:
-    pass
 
 BOT_NAME = "hgpt"
 ROOT_URL = os.getenv("ROOT_URL")
 OUT_PATH = os.getenv("OUT_PATH", "data/real_estates.jsonl")
-MAX_DETAIL_PAGES = int(os.getenv("MAX_DETAIL_PAGES", "1"))
+MAX_DETAIL_PAGES = int(os.getenv("MAX_DETAIL_PAGES", "20"))
+
+GMAPS_API_KEY = os.getenv("GMAPS_API_KEY")
 
 SPIDER_MODULES = ["hgpt.spiders"]
 NEWSPIDER_MODULE = "hgpt.spiders"
@@ -60,6 +62,7 @@ DOWNLOAD_HANDLERS = {
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {"hgpt.pipelines.DistancePipeline": 300}
+TRAVEL_CONFIG = json.loads(os.getenv("TRAVEL_CONFIG", "[]"))
 
 FEEDS = {
     OUT_PATH: {
