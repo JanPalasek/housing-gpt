@@ -6,11 +6,12 @@ build-backend = "setuptools.build_meta"
 name = "housing-gpt"
 description = "GPT to help with searching your dream home."
 version = "0.1"
-dependencies = ["python-dotenv", "langchain", "langchain-openai", "scrapy", "playwright", "scrapy-playwright"]
+dependencies = ["langchain", "langchain-openai", "scrapy", "playwright", "scrapy-playwright"]
 
 [project.optional-dependencies]
-dev = ["pip-tools", "ruff", "pre-commit", "jupyter", "quartodoc"]
+dev = ["python-dotenv", "googlemaps", "pip-tools", "ruff", "pre-commit", "jupyter", "quartodoc"]
 docs = ["jupyter", "quartodoc"]
+googlemaps = ["googlemaps"]
 
 [project.scripts]
 hgpt = "hgpt.__main__:cli"

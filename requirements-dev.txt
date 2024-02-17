@@ -112,6 +112,8 @@ frozenlist==1.4.1
     # via
     #   aiohttp
     #   aiosignal
+googlemaps==4.10.0
+    # via housing-gpt (pyproject.toml)
 greenlet==3.0.3
     # via
     #   playwright
@@ -401,6 +403,8 @@ python-dateutil==2.8.2
     # via
     #   arrow
     #   jupyter-client
+python-dotenv==1.0.1
+    # via housing-gpt (pyproject.toml)
 python-json-logger==2.0.7
     # via jupyter-events
 pyyaml==6.0.1
@@ -435,6 +439,7 @@ regex==2023.12.25
     # via tiktoken
 requests==2.31.0
     # via
+    #   googlemaps
     #   jupyterlab-server
     #   langchain
     #   langchain-community

@@ -52,9 +52,9 @@ class LLMSpider(scrapy.Spider):
 
         # process urls by gpt
         input_ = "\n".join(urls)
-        self.logger.info("Extracting list page on url '%s'...", response.url)
+        self.logger.info("Started extracting list page on url '%s'...", response.url)
         result: RealEstateListPage = await self.list_chain.ainvoke({"input": input_, "current_url": response.url})
-        self.logger.info("Extracted '%s'. Next page: %s", response.url, result.next_list_page)
+        self.logger.info("Stopped extracting '%s'. Next page: %s", response.url, result.next_list_page)
 
         # go over all real estate detail urls and search them
         for url in result.detail_page_urls:
@@ -71,7 +71,6 @@ class LLMSpider(scrapy.Spider):
         # get only text content
         text_nodes = response.xpath("//body//*[not(self::script or self::style)]/text()").getall()
         input_ = " ".join([text.strip() for text in text_nodes if text.strip()])
-
         # parse output
         self.logger.info("Started extracting detail page information on url '%s'...", response.url)
         result: RealEstate = await self.detail_chain.ainvoke({"input": input_})

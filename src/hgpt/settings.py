@@ -9,9 +9,12 @@
 
 import os
 
-from dotenv import load_dotenv
+try:
+    from dotenv import load_dotenv
 
-load_dotenv()
+    load_dotenv()
+except ImportError:
+    pass
 
 BOT_NAME = "hgpt"
 ROOT_URL = os.getenv("ROOT_URL")
@@ -56,7 +59,7 @@ DOWNLOAD_HANDLERS = {
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-# ITEM_PIPELINES = { "hgpt.pipelines.ExtractPipeline": 300 }  # noqa: ERA001
+ITEM_PIPELINES = {"hgpt.pipelines.DistancePipeline": 300}
 
 FEEDS = {
     OUT_PATH: {
