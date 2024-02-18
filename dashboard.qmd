@@ -8,6 +8,8 @@ format:
 server: shiny
 ---
 
+## {.sidebar}
+
 
 ```{python}
 import polars as pl
@@ -24,7 +26,7 @@ _ = pf.set_theme()
 
 ```{python}
 data = (
-    pl.read_ndjson("../data/real_estates.jsonl")
+    pl.read_ndjson("data/real_estates.jsonl")
     .unique(subset=["url"], keep="last")
 )
 ```
@@ -56,8 +58,6 @@ cdata = (
 )
 ```
 
-## {.sidebar}
-
 ```{python}
 ui.input_select("address", "Address:",
                 choices=cdata["address"].to_list())
@@ -67,17 +67,13 @@ ui.input_select("address", "Address:",
 
 ### Row
 
-#### Column {height="33%"}
-
 ```{python}
 @render.ui
 def price():
     row = cdata.filter(pl.col("address") == input.address()).to_pandas().iloc[0]
     price = int(row["price"])
-    return ui.value_box("Price (Kč)", price)
+    return ui.value_box("Price (Kč)", "{:,}".format(price).replace(',', ' '))
 ```
-
-#### Column {height="33%"}
 
 ```{python}
 @render.ui
@@ -87,8 +83,6 @@ def area():
     return ui.value_box("Area (m2)", floor_area)
 ```
 
-#### Column {height="33%"}
-
 ```{python}
 @render.ui
 def layout():
@@ -97,9 +91,24 @@ def layout():
     return ui.value_box("Layout", layout)
 ```
 
-### Row
+```{python}
+@render.ui
+def floor_level():
+    row = (
+        data.filter(pl.col("location").struct.field("address") == input.address())
+        .select(
+            pl.col("location").struct.field("floor_level"),
+            pl.col("location").struct.field("total_floor_levels")
+        )
+        .to_pandas()
+        .iloc[0]
+    )
+    floor_level = int(row["floor_level"])
+    total_floor_levels = int(row["total_floor_levels"])
+    return ui.value_box("Floor Level", f"{floor_level} / {total_floor_levels}")
+```
 
-#### Column {height="40%"}
+### Row
 
 ```{python}
 @render.ui
@@ -114,8 +123,6 @@ def duration_1():
     duration = int(row["duration"])
     return ui.value_box(f"Travel Time ({address})", duration)
 ```
-
-#### Column {height="40%"}
 
 ```{python}
 @render.ui
@@ -133,8 +140,6 @@ def duration_2():
 
 ### Row
 
-#### Column
-
 ```{python}
 @render.ui
 def area_2():
@@ -142,8 +147,6 @@ def area_2():
     area = int(row["floor_area"])
     return ui.value_box("Floor Area (m2)", area)
 ```
-
-#### Column
 
 ```{python}
 @render.ui
@@ -153,8 +156,6 @@ def balcony_loggia_area():
     loggia = int(row["loggia_area"])
     return ui.value_box("Balcony / Loggia (m2)", balcony + loggia)
 ```
-
-#### Column
 
 ```{python}
 @render.ui
@@ -172,38 +173,6 @@ def cellar_pantry():
 
 ### Row
 
-#### Column
-```{python}
-@render.ui
-def bottom_level():
-    row = (
-        data.filter(pl.col("location").struct.field("address") == input.address())
-        .select(pl.col("location").struct.field("floor_level"))
-        .to_pandas()
-        .iloc[0]
-    )
-    floor_level = int(row["floor_level"])
-    return ui.value_box("Floor Level", floor_level)
-```
-
-#### Column
-```{python}
-@render.ui
-def total_levels():
-    row = (
-        data.filter(pl.col("location").struct.field("address") == input.address())
-        .select(pl.col("location").struct.field("total_floor_levels"))
-        .to_pandas()
-        .iloc[0]
-    )
-    total_floor_levels = int(row["total_floor_levels"])
-    return ui.value_box("Total Floors", total_floor_levels)
-```
-
-### Row
-
-
-#### Column
 ```{python}
 @render.ui
 def built_year():
@@ -217,7 +186,6 @@ def built_year():
     return ui.value_box("Built (Year)", built_year)
 ```
 
-#### Column
 ```{python}
 @render.ui
 def reconstructed_year():
