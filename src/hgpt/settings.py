@@ -18,10 +18,11 @@ with contextlib.suppress(ImportError):
 
 BOT_NAME = "hgpt"
 ROOT_URL = os.getenv("ROOT_URL")
-OUT_PATH = os.getenv("OUT_PATH", "data/real_estates.jsonl")
+OUT_PATH = os.getenv("DATA_PATH", "data/real_estates.jsonl")
 MAX_DETAIL_PAGES = int(os.getenv("MAX_DETAIL_PAGES", "20"))
 
 GMAPS_API_KEY = os.getenv("GMAPS_API_KEY")
+OPENAI_MODEL = os.getenv("OPENAI_MODEL")
 
 SPIDER_MODULES = ["hgpt.spiders"]
 NEWSPIDER_MODULE = "hgpt.spiders"
@@ -73,6 +74,7 @@ FEEDS = {
         "item_export_kwargs": {
             "export_empty_fields": True,
         },
+        "overwrite": False,
     },
 }
 

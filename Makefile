@@ -10,11 +10,11 @@ install_dev:
 	$(PYTHON) -m pre_commit install
 
 compile:
-	$(PYTHON) -m piptools compile --resolver=backtracking --no-emit-index-url --extra=dev -o requirements-dev.txt pyproject.toml
+	$(PYTHON) -m piptools compile --resolver=backtracking --no-emit-index-url --extra=dev -o requirements.txt pyproject.toml
 	$(PYTHON) -m piptools compile --resolver=backtracking --no-emit-index-url --extra=docs -o requirements-docs.txt pyproject.toml
 
 sync:
-	$(PYTHON) -m piptools sync requirements-dev.txt
+	$(PYTHON) -m piptools sync requirements.txt
 	$(PYTHON) -m pip install -e .
 
 up: compile sync

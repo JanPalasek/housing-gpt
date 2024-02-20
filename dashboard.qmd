@@ -12,12 +12,19 @@ server: shiny
 
 
 ```{python}
+#| context: setup
+#| output: false
+
 import polars as pl
 import seaborn.objects as so
 import profiplots as pf
 import itables
 from shiny import render, ui
+from dotenv import load_dotenv
+import os
+import s3fs
 
+load_dotenv()
 itables.init_notebook_mode(all_interactive=False)
 
 _ = pf.set_theme()
@@ -25,13 +32,23 @@ _ = pf.set_theme()
 
 
 ```{python}
-data = (
-    pl.read_ndjson("data/real_estates.jsonl")
-    .unique(subset=["url"], keep="last")
-)
+#| context: setup
+#| output: false
+
+from io import BytesIO
+
+fs = s3fs.S3FileSystem(anon=False)
+
+with fs.open(os.getenv("DATA_PATH")) as file:
+    data = (
+        pl.read_ndjson(BytesIO(file.read()))
+        .unique(subset=["url"], keep="last")
+    )
 ```
 
 ```{python}
+#| context: setup
+#| output: false
 cdata = (
     data
     .select(

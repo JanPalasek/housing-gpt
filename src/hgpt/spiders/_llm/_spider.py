@@ -26,15 +26,15 @@ class LLMSpider(scrapy.Spider):
         handler.setFormatter(formatter)
         logging.getLogger(self.logger.name).addHandler(handler)
 
-        # create crawl chain
-        model = ChatOpenAI(model="gpt-4-0125-preview")
-        self.list_chain = create_list_chain(model)
-        model = ChatOpenAI(model="gpt-4-0125-preview")
-        self.detail_chain = create_detail_chain(model)
-
         self.searched_detail_pages = 0
 
     def start_requests(self):
+        # create crawl chain
+        model = ChatOpenAI(model=self.settings.get("OPENAI_MODEL"))
+        self.list_chain = create_list_chain(model)
+        model = ChatOpenAI(model=self.settings.get("OPENAI_MODEL"))
+        self.detail_chain = create_detail_chain(model)
+
         # go to root request url, it should be a parse list
         yield scrapy.Request(self.settings.get("ROOT_URL"), meta=META, callback=self.parse_list)
 
@@ -53,9 +53,13 @@ class LLMSpider(scrapy.Spider):
 
         # process urls by gpt
         input_ = "\n".join(urls)
-        self.logger.info("Started extracting list page on url '%s'...", response.url)
-        result: RealEstateListPage = await self.list_chain.ainvoke({"input": input_, "current_url": response.url})
-        self.logger.info("Stopped extracting '%s'. Next page: %s", response.url, result.next_list_page)
+        try:
+            self.logger.info("Started extracting list page on url '%s'...", response.url)
+            result: RealEstateListPage = await self.list_chain.ainvoke({"input": input_, "current_url": response.url})
+            self.logger.info("Stopped extracting '%s'. Next page: %s", response.url, result.next_list_page)
+        except Exception as exc:
+            self.logger.error("An error was raised when processing LIST url '%s'. Error: %s", response.url, exc)
+            return
 
         # go over all real estate detail urls and search them
         for url in result.detail_page_urls:
@@ -72,15 +76,21 @@ class LLMSpider(scrapy.Spider):
         # get only text content
         text_nodes = response.xpath("//body//*[not(self::script or self::style)]/text()").getall()
         input_ = " ".join([text.strip() for text in text_nodes if text.strip()])
+
         # parse output
-        self.logger.info("Started extracting detail page information on url '%s'...", response.url)
-        result: RealEstate = await self.detail_chain.ainvoke({"input": input_})
-        self.logger.info(
-            "Finished extracting detail page information on url '%s'... Price: %s, address: %s",
-            response.url,
-            result.price,
-            result.location.address,
-        )
+        try:
+            self.logger.info("Started extracting detail page information on url '%s'...", response.url)
+            result: RealEstate = await self.detail_chain.ainvoke({"input": input_})
+            self.logger.info(
+                "Finished extracting detail page information on url '%s'... Price: %s, address: %s",
+                response.url,
+                result.price,
+                result.location.address,
+            )
+        except Exception as exc:
+            self.logger.error("An error was raised when processing DETAIL url '%s'. Error: %s", response.url, exc)
+            return
+
         result_dict = result.dict()
         result_dict["url"] = response.url
         result_dict["dt"] = datetime.now()
