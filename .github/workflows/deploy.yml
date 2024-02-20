@@ -37,12 +37,14 @@ jobs:
     - name: Render the dashboard
       run: |
         quarto render dashboard.qmd
-    - name: Deploy to shinyapps
+    - name: Preparing .env for deployment
       run: |
         echo "AWS_ACCESS_KEY_ID=${{ env.AWS_ACCESS_KEY_ID }}\nAWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY }}\nAWS_REGION=${{ env.AWS_REGION }}\nDATA_DIR_PATH=${{ env.DATA_DIR_PATH }}" > .env
+    - name: Deploy to shinyapps
+      run: |
         rsconnect deploy shiny . \
           --account "${{ secrets.SHINYAPPS_ACCOUNT }}" \
           --token "${{ secrets.SHINYAPPS_TOKEN }}" \
           --secret "${{ secrets.SHINYAPPS_SECRET }}" \
-          --app-id "{{ secrets.SHINYAPPS_APP_ID }}" \
+          --app-id "${{ secrets.SHINYAPPS_APP_ID }}" \
           --title housing-gpt
