@@ -1,0 +1,45 @@
+name: Deploy
+
+env:
+  QUARTO_VERSION: "1.4.549"
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Scrape"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    # needs: scrape
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.11.8'
+    - run: |
+        mkdir -p /opt/quarto/${QUARTO_VERSION}
+        curl -o quarto.tar.gz -L \
+            "https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-amd64.tar.gz"
+        tar -zxvf quarto.tar.gz \
+            -C "/opt/quarto/${QUARTO_VERSION}" \
+            --strip-components=1
+        rm quarto.tar.gz
+        ln -s /opt/quarto/${QUARTO_VERSION}/bin/quarto /usr/local/bin/quarto
+    - run: |
+        python -m pip install -r requirements.txt
+    - name: Render the dashboard
+      env:
+        DATA_DIR_PATH: "${{ secrets.DATA_DIR_PATH }}"
+      run: quarto render dashboard.qmd
+    - name: Deploy to shinyapps
+      env:
+        AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+        AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+        AWS_REGION: "${{ secrets.AWS_REGION }}"
+      run: |
+        echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}\nAWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}\nAWS_REGION=${{ secrets.AWS_REGION }}\n" > .env
+        rsconnect add --account "${{ secrets.SHINYAPPS_ACCOUNT }}" --name "${{ secrets.SHINYAPPS_ACCOUNT }}" --token "${{ secrets.SHINYAPPS_TOKEN }}" --secret "${{ secrets.SHINYAPPS_SECRET }}"
+        rsconnect deploy shiny . --name "${{ secrets.SHINYAPPS_ACCOUNT }}" --title housing-gpt
