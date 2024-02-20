@@ -1,5 +1,3 @@
-import logging
-import sys
 from datetime import datetime
 from urllib.parse import urlparse
 
@@ -19,16 +17,6 @@ META = {"playwright": True, "playwright_page_coroutines": [PageMethod("wait_for_
 class LLMSpider(scrapy.Spider):
     name = "llm"
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        handler = logging.StreamHandler(sys.stdout)
-        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-        handler.setFormatter(formatter)
-        logging.getLogger(self.logger.name).addHandler(handler)
-
-        self.searched_detail_pages = {}
-
     def start_requests(self):
         # create crawl chain
         model = ChatOpenAI(model=self.settings.get("OPENAI_MODEL"))
@@ -37,6 +25,7 @@ class LLMSpider(scrapy.Spider):
         self.detail_chain = create_detail_chain(model)
 
         # go to root request url, it should be a parse list
+        self.searched_detail_pages = {}
         for url in self.settings.get("ROOT_URLS"):
             self.logger.info("Submitting url to queue '%s'...", url)
             self.searched_detail_pages[urlparse(url).netloc] = 0

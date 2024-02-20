@@ -22,10 +22,4 @@ up: compile sync
 docs:
 	cd docs/ && $(PYTHON) -m quartodoc build && quarto render && cd ..
 
-deploy_dashboard:
-	@echo "Deploying..."
-	quarto render dashboard.qmd
-	rsconnect deploy shiny . --name janpalasek --title housing-gpt
-	rm app.py
-
-.PHONY: install_dev compile sync up docs deploy_dashboard
+.PHONY: install_dev compile sync up docs
