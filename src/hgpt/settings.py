@@ -10,6 +10,7 @@
 import contextlib
 import json
 import os
+from datetime import datetime
 
 with contextlib.suppress(ImportError):
     from dotenv import load_dotenv
@@ -18,7 +19,7 @@ with contextlib.suppress(ImportError):
 
 BOT_NAME = "hgpt"
 ROOT_URLS = json.loads(os.getenv("ROOT_URL", "[]"))
-OUT_PATH = os.getenv("DATA_PATH", "data/real_estates.jsonl")
+DATA_DIR_PATH = os.getenv("DATA_DIR_PATH")
 MAX_DETAIL_PAGES = int(os.getenv("MAX_DETAIL_PAGES", "5"))
 
 GMAPS_API_KEY = os.getenv("GMAPS_API_KEY")
@@ -65,7 +66,7 @@ ITEM_PIPELINES = {"hgpt.pipelines.DistancePipeline": 300}
 TRAVEL_CONFIG = json.loads(os.getenv("TRAVEL_CONFIG", "[]"))
 
 FEEDS = {
-    OUT_PATH: {
+    os.path.join(DATA_DIR_PATH, "{}.jsonl".format(datetime.now().strftime("%Y%m%d%H%M%S"))): {
         "format": "jsonlines",
         "encoding": "utf8",
         "store_empty": False,
@@ -73,7 +74,6 @@ FEEDS = {
         "item_export_kwargs": {
             "export_empty_fields": True,
         },
-        "overwrite": False,
     },
 }
 

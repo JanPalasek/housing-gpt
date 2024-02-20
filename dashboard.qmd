@@ -36,14 +36,25 @@ _ = pf.set_theme()
 #| output: false
 
 from io import BytesIO
+from pathlib import Path
+
+DATA_DIR_PATH = os.getenv("DATA_DIR_PATH")
+assert DATA_DIR_PATH is not None
 
 fs = s3fs.S3FileSystem(anon=False)
+files = fs.ls(DATA_DIR_PATH)
 
-with fs.open(os.getenv("DATA_PATH")) as file:
-    data = (
-        pl.read_ndjson(BytesIO(file.read()))
-        .unique(subset=["url"], keep="last")
-    )
+data = []
+for path in files:
+    with fs.open(path) as file:
+        new_data = (
+            pl.read_ndjson(BytesIO(file.read()))
+            .unique(subset=["url"], keep="last")
+        )
+
+        data.append(new_data)
+
+data = pl.concat(data, how="diagonal")
 ```
 
 ```{python}

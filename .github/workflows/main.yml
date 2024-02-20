@@ -22,7 +22,7 @@ jobs:
           GMAPS_API_KEY: "${{ secrets.GMAPS_API_KEY }}"
           OPENAI_API_KEY: "${{ secrets.OPENAI_API_KEY }}"
           OPENAI_MODEL: "${{ vars.OPENAI_MODEL }}"
-          DATA_PATH: "${{ vars.DATA_PATH }}"
+          DATA_DIR_PATH: "${{ vars.DATA_DIR_PATH }}"
           MAX_DETAIL_PAGES: "${{ vars.MAX_DETAIL_PAGES }}"
           TRAVEL_CONFIG: "${{ vars.TRAVEL_CONFIG }}"
           ROOT_URLS: "${{ vars.ROOT_URLS }}"
