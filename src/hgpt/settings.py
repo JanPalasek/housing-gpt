@@ -19,7 +19,7 @@ with contextlib.suppress(ImportError):
 BOT_NAME = "hgpt"
 ROOT_URL = os.getenv("ROOT_URL")
 OUT_PATH = os.getenv("DATA_PATH", "data/real_estates.jsonl")
-MAX_DETAIL_PAGES = int(os.getenv("MAX_DETAIL_PAGES", "20"))
+MAX_DETAIL_PAGES = int(os.getenv("MAX_DETAIL_PAGES", "5"))
 
 GMAPS_API_KEY = os.getenv("GMAPS_API_KEY")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL")
@@ -28,7 +28,6 @@ SPIDER_MODULES = ["hgpt.spiders"]
 NEWSPIDER_MODULE = "hgpt.spiders"
 
 LOG_LEVEL = "INFO"
-LOG_FILE = f"{BOT_NAME}.log"
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = "hgpt"
