@@ -9,10 +9,10 @@ env:
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ["Scrape"]
-    types:
-      - completed
+  # workflow_run:
+  #   workflows: ["Scrape"]
+  #   types:
+  #     - completed
 
 jobs:
   deploy:
@@ -39,5 +39,11 @@ jobs:
         quarto render dashboard.qmd
     - name: Deploy to shinyapps
       run: |
-        rsconnect add --account "${{ secrets.SHINYAPPS_ACCOUNT }}" --name "${{ secrets.SHINYAPPS_ACCOUNT }}" --token "${{ secrets.SHINYAPPS_TOKEN }}" --secret "${{ secrets.SHINYAPPS_SECRET }}"
-        rsconnect deploy shiny . --name "${{ secrets.SHINYAPPS_ACCOUNT }}" --title housing-gpt -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_REGION
+        echo "AWS_ACCESS_KEY_ID=${{ env.AWS_ACCESS_KEY_ID }}\nAWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY }}\nAWS_REGION=${{ env.AWS_REGION }}\nDATA_DIR_PATH=${{ env.DATA_DIR_PATH }}" > .env
+        rsconnect deploy shiny . \
+          --account "${{ secrets.SHINYAPPS_ACCOUNT }}" \
+          --name "${{ secrets.SHINYAPPS_ACCOUNT }}" \
+          --token "${{ secrets.SHINYAPPS_TOKEN }}" \
+          --secret "${{ secrets.SHINYAPPS_SECRET }}" \
+          --app-id "{{ secrets.SHINYAPPS_APP_ID }}"
+          --title housing-gpt

@@ -1,6 +1,7 @@
 import logging
 import sys
 from datetime import datetime
+from urllib.parse import urlparse
 
 import scrapy
 from langchain_openai import ChatOpenAI
@@ -26,7 +27,7 @@ class LLMSpider(scrapy.Spider):
         handler.setFormatter(formatter)
         logging.getLogger(self.logger.name).addHandler(handler)
 
-        self.searched_detail_pages = 0
+        self.searched_detail_pages = {}
 
     def start_requests(self):
         # create crawl chain
@@ -37,15 +38,16 @@ class LLMSpider(scrapy.Spider):
 
         # go to root request url, it should be a parse list
         for url in self.settings.get("ROOT_URLS"):
+            self.logger.info("Submitting url to queue '%s'...", url)
+            self.searched_detail_pages[urlparse(url).netloc] = 0
             yield scrapy.Request(url, meta=META, callback=self.parse_list)
 
-    @property
-    def _continue_scraping(self) -> bool:
-        return self.searched_detail_pages < self.settings.get("MAX_DETAIL_PAGES")
+    def _continue_scraping(self, url: str) -> bool:
+        return self.searched_detail_pages[urlparse(url).netloc] < self.settings.get("MAX_DETAIL_PAGES")
 
     async def parse_list(self, response: Response):
         # scraped max pages => stop
-        if not self._continue_scraping:
+        if not self._continue_scraping(response.url):
             return
 
         # extract all urls, remove duplicates
@@ -65,10 +67,11 @@ class LLMSpider(scrapy.Spider):
         # go over all real estate detail urls and search them
         for url in result.detail_page_urls:
             # scraped max pages => break
-            if not self._continue_scraping:
+            new_url = response.urljoin(url)
+            if not self._continue_scraping(new_url):
                 return
-            self.searched_detail_pages += 1
-            yield scrapy.Request(response.urljoin(url), meta=META, callback=self.parse_detail)
+            self.searched_detail_pages[urlparse(new_url).netloc] += 1
+            yield scrapy.Request(new_url, meta=META, callback=self.parse_detail)
 
         # follow the next page link
         yield scrapy.Request(response.urljoin(result.next_list_page), meta=META, callback=self.parse_list)
