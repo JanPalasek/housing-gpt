@@ -2,6 +2,10 @@ name: Deploy
 
 env:
   QUARTO_VERSION: "1.4.549"
+  DATA_DIR_PATH: "${{ vars.DATA_DIR_PATH }}"
+  AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+  AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+  AWS_REGION: "${{ secrets.AWS_REGION }}"
 
 on:
   workflow_dispatch:
@@ -32,14 +36,8 @@ jobs:
         python -m pip install -r requirements.txt
     - name: Render the dashboard
       run: |
-        echo "${{ vars.DATA_DIR_PATH }}"
-        DATA_DIR_PATH="${{ vars.DATA_DIR_PATH }}" quarto render dashboard.qmd
+        quarto render dashboard.qmd
     - name: Deploy to shinyapps
-      env:
-        AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
-        AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-        AWS_REGION: "${{ secrets.AWS_REGION }}"
       run: |
-        echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}\nAWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}\nAWS_REGION=${{ secrets.AWS_REGION }}\n" > .env
         rsconnect add --account "${{ secrets.SHINYAPPS_ACCOUNT }}" --name "${{ secrets.SHINYAPPS_ACCOUNT }}" --token "${{ secrets.SHINYAPPS_TOKEN }}" --secret "${{ secrets.SHINYAPPS_SECRET }}"
-        rsconnect deploy shiny . --name "${{ secrets.SHINYAPPS_ACCOUNT }}" --title housing-gpt
+        rsconnect deploy shiny . --name "${{ secrets.SHINYAPPS_ACCOUNT }}" --title housing-gpt -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_REGION
