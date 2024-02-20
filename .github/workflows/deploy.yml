@@ -31,9 +31,9 @@ jobs:
     - run: |
         python -m pip install -r requirements.txt
     - name: Render the dashboard
-      env:
-        DATA_DIR_PATH: "${{ vars.DATA_DIR_PATH }}"
-      run: quarto render dashboard.qmd
+      run: |
+        echo "${{ vars.DATA_DIR_PATH }}"
+        DATA_DIR_PATH="${{ vars.DATA_DIR_PATH }}" quarto render dashboard.qmd
     - name: Deploy to shinyapps
       env:
         AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
