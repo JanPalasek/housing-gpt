@@ -25,7 +25,8 @@ dev = [
   "shiny",
   "shinywidgets",
   "rsconnect-python",
-  "boto3"
+  "boto3",
+  "s3fs"
 ]
 docs = ["jupyter", "quartodoc"]
 googlemaps = ["googlemaps"]

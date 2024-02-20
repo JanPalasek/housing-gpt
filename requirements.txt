@@ -58,6 +58,7 @@ boto3==1.34.45
 botocore==1.34.45
     # via
     #   boto3
+    #   s3fs
     #   s3transfer
 build==1.0.3
     # via pip-tools
@@ -133,6 +134,8 @@ frozenlist==1.4.1
     # via
     #   aiohttp
     #   aiosignal
+fsspec==2024.2.0
+    # via s3fs
 googlemaps==4.10.0
     # via housing-gpt (pyproject.toml)
 greenlet==3.0.3
@@ -552,6 +555,8 @@ rpds-py==0.18.0
 rsconnect-python==1.22.0
     # via housing-gpt (pyproject.toml)
 ruff==0.2.2
+    # via housing-gpt (pyproject.toml)
+s3fs==0.4.2
     # via housing-gpt (pyproject.toml)
 s3transfer==0.10.0
     # via boto3
