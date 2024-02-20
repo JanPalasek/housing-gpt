@@ -17,7 +17,7 @@ with contextlib.suppress(ImportError):
     load_dotenv()
 
 BOT_NAME = "hgpt"
-ROOT_URL = os.getenv("ROOT_URL")
+ROOT_URLS = json.loads(os.getenv("ROOT_URL", "[]"))
 OUT_PATH = os.getenv("DATA_PATH", "data/real_estates.jsonl")
 MAX_DETAIL_PAGES = int(os.getenv("MAX_DETAIL_PAGES", "5"))
 

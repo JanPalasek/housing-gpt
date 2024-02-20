@@ -36,7 +36,8 @@ class LLMSpider(scrapy.Spider):
         self.detail_chain = create_detail_chain(model)
 
         # go to root request url, it should be a parse list
-        yield scrapy.Request(self.settings.get("ROOT_URL"), meta=META, callback=self.parse_list)
+        for url in self.settings.get("ROOT_URLS"):
+            yield scrapy.Request(url, meta=META, callback=self.parse_list)
 
     @property
     def _continue_scraping(self) -> bool:
