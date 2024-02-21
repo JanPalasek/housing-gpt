@@ -8,28 +8,20 @@ format:
 server: shiny
 ---
 
-## {.sidebar}
-
+# Overview
 
 ```{python}
 #| context: setup
 #| output: false
 
 import polars as pl
-import seaborn.objects as so
-import profiplots as pf
-import itables
 from shiny import render, ui
 from dotenv import load_dotenv
 import os
 import s3fs
 
 load_dotenv()
-itables.init_notebook_mode(all_interactive=False)
-
-_ = pf.set_theme()
 ```
-
 
 ```{python}
 #| context: setup
@@ -47,15 +39,39 @@ files = fs.ls(DATA_DIR_PATH)
 data = []
 for path in files:
     with fs.open(path) as file:
-        new_data = (
-            pl.read_ndjson(BytesIO(file.read()))
-            .unique(subset=["url"], keep="last")
-        )
+        new_data = pl.read_ndjson(BytesIO(file.read()))
 
         data.append(new_data)
 
-data = pl.concat(data, how="diagonal")
+data = (
+    pl.concat(data, how="diagonal")
+    .unique(subset=["url"], keep="last")
+    .filter(pl.col("dt").is_not_null())
+)
 ```
+
+```{python}
+from shiny import render
+
+@render.data_frame
+def penguins_df():
+    return render.DataTable(data.select(
+        pl.col("dt").alias("Last Encountered"),
+        pl.col("location").struct.field("address").alias("Address"),
+        pl.col("price").alias("Price"),
+        ((pl.col("travel").list[0].struct.field("duration").alias("duration_1") * pl.col("travel").list[1].struct.field("duration").alias("duration_2")) ** (1 / 2)).cast(pl.Int64).alias("Avg Travel Time"),
+        (pl.col("location").struct.field("floor_level").cast(pl.String) + " / " + pl.col("location").struct.field("total_floor_levels").cast(pl.String)).alias("Level"),
+        pl.col("layout").alias("Layout"),
+        pl.col("size").struct.field("floor_area").alias("Floor"),
+        (pl.col("size").struct.field("balcony_area") + pl.col("size").struct.field("loggia_area")).cast(pl.Int64).cast(pl.String).alias("Balcony / Loggia"),
+        (pl.col("size").struct.field("cellar_area") + pl.col("size").struct.field("pantry_area")).cast(pl.Int64).cast(pl.String).alias("Cellar / Pantry"),
+        pl.col("url").alias("Url")
+    ), row_selection_mode="none", width="100%")  
+```
+
+# Details
+
+## {.sidebar}
 
 ```{python}
 #| context: setup

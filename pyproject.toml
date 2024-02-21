@@ -11,11 +11,9 @@ dependencies = ["langchain", "langchain-openai", "scrapy", "playwright", "scrapy
 [project.optional-dependencies]
 dev = [
   "python-dotenv",
+  "pandas",
   "polars",
   "pyarrow",
-  "itables",
-  "seaborn",
-  "profiplots",
   "googlemaps",
   "pip-tools",
   "ruff",
