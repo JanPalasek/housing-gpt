@@ -56,17 +56,17 @@ from shiny import render
 @render.data_frame
 def penguins_df():
     return render.DataTable(data.select(
-        pl.col("dt").alias("Last Encountered"),
+        pl.col("dt").alias("Seen"),
         pl.col("location").struct.field("address").alias("Address"),
         pl.col("price").alias("Price"),
-        ((pl.col("travel").list[0].struct.field("duration").alias("duration_1") * pl.col("travel").list[1].struct.field("duration").alias("duration_2")) ** (1 / 2)).cast(pl.Int64).alias("Avg Travel Time"),
+        ((pl.col("travel").list[0].struct.field("duration").alias("duration_1") * pl.col("travel").list[1].struct.field("duration").alias("duration_2")) ** (1 / 2)).cast(pl.Int64).alias("Travel"),
         (pl.col("location").struct.field("floor_level").cast(pl.String) + " / " + pl.col("location").struct.field("total_floor_levels").cast(pl.String)).alias("Level"),
         pl.col("layout").alias("Layout"),
         pl.col("size").struct.field("floor_area").alias("Floor"),
-        (pl.col("size").struct.field("balcony_area") + pl.col("size").struct.field("loggia_area")).cast(pl.Int64).cast(pl.String).alias("Balcony / Loggia"),
-        (pl.col("size").struct.field("cellar_area") + pl.col("size").struct.field("pantry_area")).cast(pl.Int64).cast(pl.String).alias("Cellar / Pantry"),
+        (pl.col("size").struct.field("balcony_area") + pl.col("size").struct.field("loggia_area")).cast(pl.Int64).cast(pl.String).alias("Balcony*"),
+        (pl.col("size").struct.field("cellar_area") + pl.col("size").struct.field("pantry_area")).cast(pl.Int64).cast(pl.String).alias("Cellar*"),
         pl.col("url").alias("Url")
-    ), row_selection_mode="none", width="100%")  
+    ), row_selection_mode="none", width="100%", filters=True)  
 ```
 
 # Details
