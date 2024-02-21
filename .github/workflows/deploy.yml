@@ -39,7 +39,7 @@ jobs:
         quarto render dashboard.qmd
     - name: Deploy to shinyapps
       run: |
-        echo "AWS_ACCESS_KEY_ID=${{ env.AWS_ACCESS_KEY_ID }}\nAWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY }}\nAWS_REGION=${{ env.AWS_REGION }}\nDATA_DIR_PATH=${{ env.DATA_DIR_PATH }}" > .env
+        echo -e "AWS_ACCESS_KEY_ID=${{ env.AWS_ACCESS_KEY_ID }}\nAWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY }}\nAWS_REGION=${{ env.AWS_REGION }}\nDATA_DIR_PATH=${{ env.DATA_DIR_PATH }}" > .env
         rsconnect deploy shiny . \
           --account "${{ secrets.SHINYAPPS_ACCOUNT }}" \
           --token "${{ secrets.SHINYAPPS_TOKEN }}" \
