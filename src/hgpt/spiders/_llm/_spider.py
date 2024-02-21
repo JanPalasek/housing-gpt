@@ -1,5 +1,4 @@
 from datetime import datetime
-from urllib.parse import urlparse
 
 import scrapy
 from langchain_openai import ChatOpenAI
@@ -10,6 +9,7 @@ from hgpt.spiders._llm._detail import RealEstate
 from hgpt.spiders._llm._detail import create_chain as create_detail_chain
 from hgpt.spiders._llm._list import RealEstateListPage
 from hgpt.spiders._llm._list import create_chain as create_list_chain
+from hgpt.utils import get_clean_hostname
 
 META = {"playwright": True, "playwright_page_coroutines": [PageMethod("wait_for_timeout", 30000)]}
 
@@ -24,15 +24,25 @@ class LLMSpider(scrapy.Spider):
         model = ChatOpenAI(model=self.settings.get("OPENAI_MODEL"))
         self.detail_chain = create_detail_chain(model)
 
+        self.max_detail_pages = {get_clean_hostname(k): v for k, v in self.settings.get("MAX_DETAIL_PAGES").items()}
+        self.allowed_domains = list(self.max_detail_pages.keys())
+
         # go to root request url, it should be a parse list
         self.searched_detail_pages = {}
         for url in self.settings.get("ROOT_URLS"):
             self.logger.info("Submitting url to queue '%s'...", url)
-            self.searched_detail_pages[urlparse(url).netloc] = 0
+            self.searched_detail_pages[get_clean_hostname(url)] = 0
             yield scrapy.Request(url, meta=META, callback=self.parse_list)
 
     def _continue_scraping(self, url: str) -> bool:
-        return self.searched_detail_pages[urlparse(url).netloc] < self.settings.get("MAX_DETAIL_PAGES")
+        hostname = get_clean_hostname(url)
+        if hostname not in self.searched_detail_pages:
+            self.logger.error("Hostname '%s' not in searched_detail_pages", hostname)
+            return False
+        if hostname not in self.max_detail_pages:
+            self.logger.error("Hostname '%s' not in max_detail_pages", hostname)
+            return False
+        return self.searched_detail_pages[hostname] < self.max_detail_pages[hostname]
 
     async def parse_list(self, response: Response):
         # scraped max pages => stop
@@ -59,7 +69,7 @@ class LLMSpider(scrapy.Spider):
             new_url = response.urljoin(url)
             if not self._continue_scraping(new_url):
                 return
-            self.searched_detail_pages[urlparse(new_url).netloc] += 1
+            self.searched_detail_pages[get_clean_hostname(new_url)] += 1
             yield scrapy.Request(new_url, meta=META, callback=self.parse_detail)
 
         # follow the next page link

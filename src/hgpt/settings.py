@@ -19,8 +19,12 @@ with contextlib.suppress(ImportError):
 
 BOT_NAME = "hgpt"
 ROOT_URLS = json.loads(os.getenv("ROOT_URLS", "[]"))
+MAX_DETAIL_PAGES = json.loads(os.getenv("MAX_DETAIL_PAGES", r"{}"))
+assert len(ROOT_URLS) == len(
+    MAX_DETAIL_PAGES
+), "There must be max number of detail pages to crawl specification for each root url."
+
 DATA_DIR_PATH = os.getenv("DATA_DIR_PATH")
-MAX_DETAIL_PAGES = int(os.getenv("MAX_DETAIL_PAGES", "5"))
 
 GMAPS_API_KEY = os.getenv("GMAPS_API_KEY")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL")
