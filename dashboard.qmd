@@ -115,7 +115,10 @@ ui.input_select("address", "Address:",
 @render.ui
 def price():
     row = cdata.filter(pl.col("address") == input.address()).to_pandas().iloc[0]
-    price = int(row["price"])
+    try:
+        price = int(row["price"])
+    except:
+        price = "NA"
     return ui.value_box("Price (Kč)", "{:,}".format(price).replace(',', ' '))
 ```
 
@@ -123,7 +126,10 @@ def price():
 @render.ui
 def area():
     row = cdata.filter(pl.col("address") == input.address()).to_pandas().iloc[0]
-    floor_area = int(row["floor_area"])
+    try:
+        floor_area = int(row["floor_area"])
+    except:
+        floor_area = "NA"
     return ui.value_box("Area (m2)", floor_area)
 ```
 
@@ -147,8 +153,14 @@ def floor_level():
         .to_pandas()
         .iloc[0]
     )
-    floor_level = int(row["floor_level"])
-    total_floor_levels = int(row["total_floor_levels"])
+    try:
+        floor_level = int(row["floor_level"])
+    except:
+        floor_level = "NA"
+    try:
+        total_floor_levels = int(row["total_floor_levels"])
+    except:
+        total_floor_levels = "NA"
     return ui.value_box("Floor Level", f"{floor_level} / {total_floor_levels}")
 ```
 
@@ -164,7 +176,10 @@ def duration_1():
         .iloc[0]
     )
     address = row["address"]
-    duration = int(row["duration"])
+    try:
+        duration = int(row["duration"])
+    except:
+        duration = "NA"
     return ui.value_box(f"Travel Time ({address})", duration)
 ```
 
@@ -178,7 +193,10 @@ def duration_2():
         .iloc[0]
     )
     address = row["address"]
-    duration = int(row["duration"])
+    try:
+        duration = int(row["duration"])
+    except:
+        duration = "NA"
     return ui.value_box(f"Travel Time ({address})", duration)
 ```
 
@@ -188,7 +206,10 @@ def duration_2():
 @render.ui
 def area_2():
     row = cdata.filter(pl.col("address") == input.address()).to_pandas().iloc[0]
-    area = int(row["floor_area"])
+    try:
+        area = int(row["floor_area"])
+    except:
+        area = "NA"
     return ui.value_box("Floor Area (m2)", area)
 ```
 
@@ -196,8 +217,14 @@ def area_2():
 @render.ui
 def balcony_loggia_area():
     row = cdata.filter(pl.col("address") == input.address()).to_pandas().iloc[0]
-    balcony = int(row["balcony_area"])
-    loggia = int(row["loggia_area"])
+    try:
+        balcony = int(row["balcony_area"])
+    except:
+        balcony = 0
+    try:
+        loggia = int(row["loggia_area"])
+    except:
+        loggia = 0
     return ui.value_box("Balcony / Loggia (m2)", balcony + loggia)
 ```
 
@@ -210,8 +237,17 @@ def cellar_pantry():
         .to_pandas()
         .iloc[0]
     )
-    pantry = int(row["pantry_area"])
-    cellar = int(row["cellar_area"])
+    
+    try:
+        pantry = int(row["pantry_area"])
+    except:
+        pantry = 0
+    
+    try:
+        cellar = int(row["cellar_area"])
+    except:
+        cellar = 0
+
     return ui.value_box("Cellar / Pantry (m2)", cellar + pantry)
 ```
 
@@ -226,7 +262,10 @@ def built_year():
         .to_pandas()
         .iloc[0]
     )
-    built_year = int(row["built_year"])
+    try:
+        built_year = int(row["built_year"])
+    except:
+        built_year = "NA"
     return ui.value_box("Built (Year)", built_year)
 ```
 
@@ -239,7 +278,10 @@ def reconstructed_year():
         .to_pandas()
         .iloc[0]
     )
-    reconstructed_year = int(row["reconstructed_year"])
+    try:
+        reconstructed_year = int(row["reconstructed_year"])
+    except:
+        reconstructed_year = "NA"
     return ui.value_box("Reconstructed (Year)", reconstructed_year)
 ```
 
