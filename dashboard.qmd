@@ -45,8 +45,8 @@ for path in files:
 
 data = (
     pl.concat(data, how="diagonal")
-    .unique(subset=["url"], keep="last")
     .filter(pl.col("dt").is_not_null())
+    .with_columns(pl.col("url").count().over("url").alias("seen_count"))
 )
 ```
 
@@ -56,7 +56,7 @@ from shiny import render
 @render.data_frame
 def penguins_df():
     return render.DataTable(data.select(
-        pl.col("dt").alias("Seen"),
+        pl.col("dt").alias("Last Seen"),
         pl.col("location").struct.field("address").alias("Address"),
         pl.col("price").alias("Price"),
         ((pl.col("travel").list[0].struct.field("duration").alias("duration_1") * pl.col("travel").list[1].struct.field("duration").alias("duration_2")) ** (1 / 2)).cast(pl.Int64).alias("Travel"),
@@ -65,7 +65,8 @@ def penguins_df():
         pl.col("size").struct.field("floor_area").alias("Floor"),
         (pl.col("size").struct.field("balcony_area") + pl.col("size").struct.field("loggia_area")).cast(pl.Int64).cast(pl.String).alias("Balcony*"),
         (pl.col("size").struct.field("cellar_area") + pl.col("size").struct.field("pantry_area")).cast(pl.Int64).cast(pl.String).alias("Cellar*"),
-        pl.col("url").alias("Url")
+        pl.col("url").alias("Url"),
+        pl.col("seen_count").alias("Seen Count"),
     ), row_selection_mode="none", width="100%", filters=True)  
 ```
 
@@ -294,4 +295,13 @@ def url():
     row = cdata.filter(pl.col("address") == input.address()).to_pandas().iloc[0]
     url = row["url"]
     return url
+```
+
+```{python}
+#| title: Seen Count (url)
+@render.ui
+def seen_count():
+    row = data.filter(pl.col("location").struct.field("address") == input.address()).to_pandas().iloc[0]
+    seen_count = row["seen_count"]
+    return str(seen_count)
 ```
