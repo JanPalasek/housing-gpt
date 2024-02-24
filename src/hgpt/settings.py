@@ -20,7 +20,7 @@ with contextlib.suppress(ImportError):
 BOT_NAME = "hgpt"
 ROOT_URLS = json.loads(os.getenv("ROOT_URLS", "[]"))
 MAX_DETAIL_PAGES = json.loads(os.getenv("MAX_DETAIL_PAGES", r"{}"))
-assert len(ROOT_URLS) == len(
+assert len(ROOT_URLS) <= len(
     MAX_DETAIL_PAGES
 ), "There must be max number of detail pages to crawl specification for each root url."
 
