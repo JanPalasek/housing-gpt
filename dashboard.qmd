@@ -46,7 +46,12 @@ for path in files:
 data = (
     pl.concat(data, how="diagonal")
     .filter(pl.col("dt").is_not_null())
-    .with_columns(pl.col("url").count().over("url").alias("seen_count"))
+    .with_columns(
+        pl.col("dt").str.to_datetime(),
+        pl.col("url").count().over("url").alias("seen_count"),
+    )
+    .sort(by=pl.col("dt"), descending=True)
+    .unique(subset=["url"], keep="first")
 )
 ```
 
