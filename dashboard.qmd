@@ -51,7 +51,8 @@ data = (
         pl.col("url").count().over("url").alias("seen_count"),
     )
     .sort(by=pl.col("dt"), descending=True)
-    .unique(subset=["url"], keep="first")
+    .unique(subset=["url"], keep="first", maintain_order=True)
+    .with_columns(pl.col("dt").dt.strftime("%Y-%m-%d"))
 )
 ```
 
